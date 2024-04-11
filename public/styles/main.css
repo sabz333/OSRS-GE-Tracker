@@ -1,0 +1,731 @@
+html {
+  height: 100%;
+}
+
+body {
+  font-family: 'Roboto', sans-serif !important;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.positive {
+  color: rgb(19,115,51) !important;
+}
+
+.negative {
+  color: rgb(165,14,14) !important;
+}
+
+/************ GOOGLE ICONS SETTINGS ************/
+
+.material-symbols-rounded {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 600,
+  'GRAD' 200,
+  'opsz' 24
+}
+
+/******************************* HEADER ********************************************/
+#headerDataDisplay {
+  background-color: rgb(248,249,250);
+  min-height: 145px;
+  position: relative;
+  margin-bottom: 8px;
+  padding-bottom: 60px;
+}
+
+#logo > img {
+  height: 36px;
+}
+
+#hamMenu {
+  /* temporarily disabled until content added */
+  display: none !important;
+}
+
+#headerItemCategorySelection {
+  display: flex;
+  align-items: center;
+}
+
+#headerItemCategorySelection > input {
+  position: absolute;
+  display: none;
+}
+
+#headerItemCategorySelection > span {
+  line-height: 1rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.07272727em;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: rgb(60,64,67);
+  border-radius: 12px;
+  margin-right: 8px;
+}
+
+#headerItemCategorySelection > label {
+  line-height: 1.25rem;
+  font-size: 0.875rem;
+  letter-spacing: .0178571429em;
+  font-weight: 500;
+  width: min-content;
+  float: left;
+  color: rgb(60,64,67);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+#headerItemCategorySelection > label.active {
+  color: rgb(24, 90, 188);
+  background-color: rgba(28, 116, 233, .1);
+}
+
+#headerItemCategorySelection > label:hover {
+  background-color: rgb(241, 243, 244);
+  cursor: pointer;
+}
+
+/****************************** Header card formatting **********************************/
+
+.headerCard {
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid rgb(218, 220, 224);
+  white-space: nowrap;
+  text-wrap: nowrap;
+  margin-right: 8px;
+}
+
+.headerCard:hover {
+  background-color: rgb(248, 249, 250);
+  cursor: pointer;
+}
+
+.topHeaderCardDiv {
+  margin-right: 8px;
+}
+
+.headerCardLink {
+  text-decoration: none;
+}
+
+.itemPriceInfo {
+  color: rgb(60,64,67);
+  font-size: 0.75rem;
+  min-width: 64px;
+  line-height: 1rem;
+  letter-spacing: 0.025em;
+  margin-right: 8px;
+  max-width: 120px;
+}
+
+.itemId {
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.itemPrice {
+  height: 16px;
+  overflow: hidden;
+}
+
+.itemPercentInfo {
+  color: rgb(60,64,67);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  letter-spacing: 0.025em;
+  font-weight: 400;
+  text-align: right;
+}
+
+.itemPercentChange {
+  min-width: unset;
+  font-weight: 500;
+  height: 16px;
+}
+
+.itemValueChange {
+  height: 16px;
+  overflow: hidden;
+}
+
+.price-arrow {  
+  height: 32px;
+  min-width: 32px;
+  padding: 6px;
+  border-radius: 8px;
+  margin-right: 8px;
+}
+
+.price-arrow > span {
+  font-size: 16px;
+  margin: auto;
+  align-items: center;
+}
+
+.price-arrow.positive {
+  background-color: rgb(230,244,234);
+}
+
+.price-arrow.negative {
+  background-color: rgb(252,232,230);
+}
+
+/************************** Search Bar formatting *****************************/
+
+.search {
+  position: absolute;
+  width: 550px;
+  left: 50%;
+  margin-top: 28px;
+  margin-left: -275px;
+  z-index: 3;
+}
+
+.search > span {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+}
+
+.searchBar {
+  border-radius: 30px;
+  box-shadow: 0 1px 3px rgba(60,63,66,.32),0 4px 12px rgba(60,63,66,.15);
+  height: 60px;
+  padding-left: 54px;
+  background: white;
+}
+
+.searchBar.searching {
+  border-radius: 30px 30px 0px 0px;
+}
+
+.searchInput {
+  position: relative;
+  height: 100%;
+  display: flex;
+}
+
+.searchInput > input {
+  outline: none;
+  line-height: 1.5rem;
+  padding-right: 48px;
+  border: none;
+}
+
+#searchBox {
+  display: none;
+  box-shadow: 0 1px 3px rgba(60,63,66,.32),0 4px 12px rgba(60,63,66,.15);
+  border-radius: 0px 0px 30px 30px;
+  border-top: 1px solid rgb(218, 220, 224);
+  z-index: 993;
+  position: absolute;
+  right: 0;
+  left: 0px;
+  outline: none;
+  overflow-y: auto;
+  max-height: 483px;
+  background: white;
+}
+
+.searchResult {
+  cursor: default;
+}
+
+.searchResult:hover {
+  background: #f8f9fa;
+}
+
+.searchResultInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 20px;
+  border-bottom: 1px solid rgb(218,220, 224);
+  cursor: pointer;
+  text-align: start;
+}
+
+.searchResultInfo > div {
+  display: inline-flex;
+}
+
+.searchResultInfo > div > img {
+  margin-left: 8px;
+}
+
+.searchResultLink {
+  text-decoration: none;
+}
+
+.foundItem {
+  line-height: 1.25rem;
+  font-size: 0.875rem;
+  letter-spacing: .0178571429em;
+  color: rgb(60, 64, 67);
+  font-weight: 400;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.foundItemPricing {
+  display: flex;
+  align-items: center;
+}
+
+.foundItemPrice {
+  line-height: 1.25rem;
+  font-size: .875rem;
+  letter-spacing: .0178571429em;
+  font-weight: 500;
+  margin-right: 24px;
+  color: rgb(32,33,36);
+}
+/******************************* Top movers list formatting ************************/
+
+main {
+  padding: 24px 48px;
+  margin: auto;
+  margin-top: 40px;
+  position: relative;
+}
+
+.moversTable-title {
+  line-height: 1.5rem;
+  font-size: 1.125rem;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: rgb(32, 33, 36);
+  margin-bottom: 8px;
+}
+
+.topMoversList {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.topMoversList > li:hover {
+  background: #f8f9fa;
+  cursor: pointer;
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #e8eaed;
+  height: 48px;
+}
+
+.listItemLink {
+  text-decoration: none;
+}
+
+.listImage {
+  display: flex;
+  align-items: center;
+}
+
+.listImage > img {
+  height: 47px;
+  margin-right: 8px;
+}
+
+.listName {
+  display: flex;
+  flex: 1;
+  max-height: 100%;
+  letter-spacing: .01785714em;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  color: #202124;
+  width: calc(100% - 56px);
+}
+
+.listNameText {
+  width: 300px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.listItemContent {
+  width: 116px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  letter-spacing: 0.00625em;
+  font-weight: 500;
+  line-height: 1.5rem;
+  color: #202124;
+}
+
+.listPercentChange {
+  padding: 0 8px;
+  border-radius: 8px;
+  width: min-content;
+  min-width: 40px;
+  height: 32px;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.listPercentChange.positive {
+  background: rgb(230,244,234);
+}
+
+.listPercentChange.negative {
+  background: rgb(252,232,230);
+}
+
+.listPercentChangeText {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  transform: translateY(calc(-100% + 28px));
+}
+
+.listPercentChangeText > span {
+  font-size: 16px;
+}
+
+/*********************************** News article formatting ****************************/
+
+.news-articles {
+  border: 1px solid rgb(218, 220, 224);
+  border-radius: 12px;
+  padding: 16px 16px 8px 16px;
+}
+
+.news-articles > h2 {
+  text-align: center;
+  text-decoration: underline;
+  font-size: 1.75rem;
+}
+
+
+.news-articles > h3 {
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+.news-list-article {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.news-list-article__figure-img {
+  width: 100%;
+}
+
+.news-list-article__title {
+  display: flex;
+  justify-content: center;
+}
+
+.news-list-article__title-link {
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+/**************************** ITEM PAGE *********************************/
+.itemTitle {
+  display: inline-flex;
+  align-items: center;
+  border-bottom: 1px solid rgb(232, 234, 237);
+  margin: -12px 0px 16px 0px;
+  padding-bottom: 8px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.itemTitle > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.upperLeftItem {
+  line-height: 1rem;
+  font-size: .6875rem;
+  letter-spacing: .0727272727em;
+  font-weight: 500;
+  text-transform: uppercase;
+  display: flex;
+  color: rgb(32, 33, 36);
+  margin: 0px;
+  align-items: end;
+}
+
+.upperLeftItem > a,span {
+  color: rgb(128, 134, 139);
+  margin-right: 4px;
+  text-decoration: none;
+}
+
+.upperLeftItem > span {
+  font-size: 18px;
+}
+
+.itemHeader {
+  display: flex;
+  align-items: center;
+}
+
+.itemHeader > img {
+  margin-left: 8px;
+  height: 80px;
+}
+
+.itemHeading {
+  margin: 0px;
+  padding-top: 2px;
+  line-height: 2rem;
+  font-size: 1.5rem;
+  letter-spacing: 0px;
+  font-weight: 400;
+}
+
+.priceInfo {
+  display: flex;
+}
+
+.priceInfo > div {
+  display: flex;
+  align-items: flex-end;
+}
+
+.mainPrice {
+  line-height: 2.75rem;
+  font-size: 2.25rem;
+  letter-spacing: 0px;
+  font-weight: 400;
+  margin-right: 16px;
+}
+
+.percentChangeInfo {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.roundedPercentContainer {
+  letter-spacing: 0.00624rem;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5rem;
+  padding: 0px 8px;
+  border-radius: 8px;
+  width: min-content;
+  min-width: 40px;
+}
+
+.roundedPercentContainer.positive {
+  background: rgb(230, 244, 234);
+}
+
+.roundedPercentContainer.negative {
+  background: rgb(252, 232, 230);
+}
+
+.roundedPercentContainer > div {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.arrow {
+  font-size: 16px;
+}
+
+.changeToday {
+  line-height: 1.5rem;
+  font-size: 1rem;
+  letter-spacing: 0.00625em;
+  font-weight: 500;
+  margin-left: 8px;
+  word-spacing: 1px;
+}
+
+.afterHours {
+  line-height: 1.25rem;
+  font-size: 0.875rem;
+  letter-spacing: 0178571429em;
+  font-weight: 500;
+  display: flex;
+  margin-bottom: 2px;
+  flex-direction: row;
+}
+
+.updateInfo {
+  width: 100%;
+  line-height: 1rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.025em;
+  font-weight: 400;
+  color: rgb(95, 99, 104);
+}
+
+.timeScale {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+.timeOptions {
+  width: 100%;
+  margin-bottom: 0px;
+  display: flex;
+  overflow: scroll;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+.timeButtons {
+  position: relative;
+  display: flex;
+  flex: 1 0 auto;
+  transform: none;
+}
+
+.timeButton {
+  height: 24px;
+  line-height: 1.25rem;
+  font-size: 0.875rem;
+  letter-spacing: .0178571429em;
+  font-weight: 500;
+  padding-right: 16px;
+  padding-left: 16px;
+  text-transform: none;
+  min-width: auto;
+  appearance: none;
+
+  justify-content: center;
+  box-sizing: border-box;
+  margin: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  border: none;
+  outline: none;
+  text-align: center;
+  white-space: nowrap;
+  background: none;
+}
+
+.timeButton:hover {
+  background: rgba(0, 0, 0, 0.035);
+}
+
+.timeButton > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: inherit;
+  pointer-events: none;
+}
+
+.selected {
+  text-decoration: solid underline rgb(24, 90, 188) 3px;
+  color: rgb(24, 90, 188);
+}
+
+.chart {
+  position: relative;
+  height: 356px;
+  width: 100%;
+}
+
+.key-stats {
+  margin-bottom: 16px;
+  padding: 16px 16px 0px 16px;
+  box-sizing: border-box;
+}
+
+.mainCategoryContainer {
+  margin-bottom: 8px;
+}
+
+.categoryContainer {
+  margin-bottom: 4px;
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+
+.categoryPill {
+  line-height: 1rem;
+  font-size: .75rem;
+  letter-spacing: .025em;
+  font-weight: 400;
+  display: flex;
+  background: #fff;
+  border: 1px solid rgb(218,220,224);
+  color: rgb(95,99,104);
+  border-radius: 24px;
+  margin: 0 4px 8px 0;
+  max-width: 260px;
+  padding: 4px 12px;
+  user-select: none;
+  position: relative;
+  white-space: nowrap;
+}
+
+.categoryPill > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.priceStats {
+  border-top: 1px solid rgb(218,220,224);
+  padding: 8px 0;
+  min-height: 43px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.priceStatsText {
+  display: flex;
+  align-items: center;
+  line-height: 1rem;
+  font-size: .6875rem;
+  letter-spacing: .0727272727em;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: rgb(95,99,104);
+  line-height: .6875rem;
+  margin-right: 8px;
+  white-space: nowrap;
+}
+
+.itemPriceStat {
+  line-height: 1.25rem;
+  font-size: .875rem;
+  letter-spacing: .0178571429em;
+  font-weight: 500;
+  color: rgb(32,33,36);
+  text-overflow: ellipsis;
+  text-align: right;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.description {
+  font-size: 0.75rem;
+  text-align: right;
+  max-width: 50%;
+}

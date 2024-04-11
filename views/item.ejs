@@ -1,0 +1,133 @@
+<%- include('partials/header.ejs'); %>
+    <main class="container">
+      <div class="itemTitle">
+        <div>
+          <div class="upperLeftItem">
+            <a href="/">Home</a>
+            <span class="material-symbols-outlined">chevron_right</span>
+            <%-itemDetails.name%>
+          </div>
+          <div class="itemHeader">
+            <div class="itemHeading"><%-itemDetails.name%></div>
+            <img src="https://services.runescape.com/m=itemdb_oldschool/obj_big.gif?id=<%-passedItemId%>" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row gx-5">
+          <div class="col-8">
+            <div>
+              <div class="priceInfo">
+                <div>
+                  <div class="mainPrice"><%-itemCalcs.currentPrice%></div>
+                </div>
+                <div class="percentChangeInfo">
+                  <span class="roundedPercentContainer <%-itemCalcs.change%>" id="mainPercentChange">
+                    <div>
+                      <span class="material-symbols-rounded d-flex arrow"
+                        ><%-itemCalcs.arrow%></span
+                      >
+                      <div>- %</div>
+                    </div>
+                  </span>
+                  <span class="changeToday <%-itemCalcs.change%>" id="mainPriceChange">- Today</span>
+                </div>  
+              </div>
+              <div class="afterHours"></div>
+              <div class="updateInfo">Updated <%- updateTime %></div>
+            </div>
+            <div class="timeScale">
+              <div class="timeOptions">
+                <span class="timeButtons" id="scaleSelectors">
+                  <button class="timeButton">
+                    <span class="selected" id="5m">1D</span>
+                  </button>
+                  <button class="timeButton">
+                    <span class="" id="1h">5D</span>
+                  </button>
+                  <button class="timeButton">
+                    <span class="" id="6h">1M</span>
+                  </button>
+                  <button class="timeButton">
+                    <span class="" id="24h">6M</span>
+                  </button>
+                  <button class="timeButton">
+                    <span class="" id="24h">1Y</span>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <div class="chart">
+              <canvas id="mainPlot"></canvas>
+              <div class="cursorInfo"></div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="row pb-4">
+              <div class="col border rounded-4">
+                  <div class="key-stats">
+                    <div class="mainCategoryContainer">
+                      <div class="categoryContainer">
+                        <span>
+                          <span class="categoryPill">
+                            <span>Potion</span>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="priceStats">
+                      <div class="priceStatsText">Opening Price</div>
+                      <div class="itemPriceStat"><%- itemCalcs.openPrice %></div>
+                    </div>
+                    <div class="priceStats">
+                      <div class="priceStatsText">Day Range</div>
+                      <div class="itemPriceStat"><%- dayMinPrice %> - <%- dayMaxPrice %></div>
+                    </div>
+                    <div class="priceStats">
+                      <div class="priceStatsText">Year Range</div>
+                      <div class="itemPriceStat"><%- yearMinPrice %> - <%- yearMaxPrice %></div>
+                    </div>
+                    <div class="priceStats">
+                      <div class="priceStatsText">Avg Daily Volume</div>
+                      <div class="itemPriceStat"><%- averageVol.toLocaleString() %></div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col border rounded-4">
+                <div class="key-stats">
+                  <div class="priceStats">
+                    <div class="priceStatsText">Daily Trade Limit</div>
+                    <div class="itemPriceStat"><%- itemDetails.trade_limit.toLocaleString() %></div>
+                  </div>
+                  <div class="priceStats">
+                    <div class="priceStatsText">High Alch</div>
+                    <div class="itemPriceStat"><%- itemDetails.high_alch %></div>
+                  </div>
+                  <div class="priceStats">
+                    <div class="priceStatsText">Low Alch</div>
+                    <div class="itemPriceStat"><%-itemDetails.low_alch %></div>
+                  </div>
+                  <div class="priceStats">
+                    <div class="priceStatsText">Description</div>
+                    <div class="itemPriceStat description"><%-itemDetails.description %></div>
+                  </div>
+                </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="itemInfo"></div>
+    </main>
+  <%- include('partials/footer.ejs'); -%>
+  <script>const itemId = <%-passedItemId%>; </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script type="module" src="https://unpkg.com/chart.js@4.4.0/dist/chart.umd.js"></script>
+  <script type="module" src="./scripts/common.mjs"></script>
+  <script type="module" src="./scripts/item.mjs"></script>
+  </body>
+  
+  </html>

@@ -1,0 +1,38 @@
+<%- include('partials/header.ejs'); -%>
+
+<main class="container-xl">
+<div class="container">
+  <div class="row">
+    <div class="col-9">
+      <div class="moversTable">
+        <section>
+          <div class="moversTable-title">Top items trading now</div>
+          <ul class="topMoversList">
+            <% topItemListArray.forEach(listItem => { %>
+             <%- listItem %>
+            <% }) %>
+          </ul>
+        </section>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="news-articles">
+        <h2 class="news-article-title">Latest RS News</h2>
+        <h3 class="news-articles-title"><%= monthYearString  %></h3>
+        <% for (let i = 0; i < newsArticleArray.length && i < 3; i++) { %>
+          <article class="news-list-article">
+            <%- newsArticleArray[i] %>
+          </article>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+<%- include('partials/footer.ejs'); -%>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="module" src="./scripts/common.mjs"></script>
+</body>
+
+</html>
