@@ -34,9 +34,11 @@ The website offers a search bar for item lookup, detailed item pages, and real-t
 Features that I would like to add to the project:
 1. **Automatic price ticker updates**
     - Currently there is a script in the Script directory that I run periodically when on the site to update the prices. Need to add cron tasks to main app.
-2. **User Accounts**
+2. **Optimize for Mobile**
+    - Configure Bootstrap containers to create a more responsive site
+3. **User Accounts**
     - Goal being to be able to save individual items to homepage to track
-3. **Useful Tools**
+4. **Useful Tools**
     - High Alch Tracker
       - Page dedicated to tracking items that can be profitable to high alch for magic xp
     - Herblore Cost Saver
