@@ -32,15 +32,15 @@ The website offers a search bar for item lookup, detailed item pages, and real-t
 
 ## Roadmap
 Features that I would like to add to the project:
-- **Automatic price ticker updates**
-  - Currently there is a script in the Script directory that I run periodically when on the site to update the prices. Need to add cron tasks to main app.
-- **User Accounts**
-  - Goal being to be able to save individual items to homepage to track
-- **Useful Tools**
-  - High Alch Tracker
-    - Page dedicated to tracking items that can be profitable to high alch for magic xp
-  - Herblore Cost Saver
-    - Find unfinished potions that provide highest xp per gp spent
+1. **Automatic price ticker updates**
+    - Currently there is a script in the Script directory that I run periodically when on the site to update the prices. Need to add cron tasks to main app.
+2. **User Accounts**
+    - Goal being to be able to save individual items to homepage to track
+3. **Useful Tools**
+    - High Alch Tracker
+      - Page dedicated to tracking items that can be profitable to high alch for magic xp
+    - Herblore Cost Saver
+      - Find unfinished potions that provide highest xp per gp spent
    
 ## Prerequisites
 - Node.js 20.x or higher
