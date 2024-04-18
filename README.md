@@ -4,8 +4,9 @@ by Sebastian Calderon
 
 ## Table of Contents
 - [Description](#description)
-- [Screenshots](https://github.com/sabz333/OSRS-GE-Tracker/new/main?filename=README.md#screenshots)
-- [Roadmap](https://github.com/sabz333/OSRS-GE-Tracker/new/main?filename=README.md#roadmap)
+- [Screenshots](#screenshots)
+- [Roadmap](#roadmap)
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 
 ## Description
