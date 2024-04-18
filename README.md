@@ -18,6 +18,8 @@ None of this would be possible without the [OSRS Wiki API](https://oldschool.run
 
 The website offers a search bar for item lookup, detailed item pages, and real-time pricing. These detailed item pages provide a summary of pricing information, ranging from current prices to yearly trends, alongside trade limits and in-game item valuations.
 
+**My goals with this project is to demonstrate my proficiency in PostgreSQL by storing pertinent data that could be easily queried through a Node client for versatile manipulation. Additionally, I wanted to showcase the retrieval of relevant API data through Axios. Continuing to leveraging Node on the server-side, I also rendered HTML templates using EJS and delivering them to users through the Express framework. With Express, I managed request routing in an organized and easily comprehensible way.**
+
 ## Screenshots
 ### Homepage
 ![Screenshot of the main homepage of the OSRS GE Tracker showcasing the similar styling to Google Finance Page](https://github.com/sabz333/OSRS-GE-Tracker/assets/66535527/a4423d53-6352-4b71-b622-16e2364597be)
