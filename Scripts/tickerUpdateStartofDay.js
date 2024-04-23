@@ -1,3 +1,4 @@
+import "dotenv/config";
 import * as db from "../db/index.js";
 import queries from "../db/queries.js";
 import express from "express";
@@ -21,7 +22,7 @@ async function openingValuePull() {
       method: "get",
       baseURL: API_URL,
       headers: {
-        'User-Agent': 'OSRS GE Tracker Website - @Sabz333 on the wiki & discord'
+        'User-Agent': process.env.USER_AGENT_HEADER,
       },
       params: {
         timestamp: date.valueOf()/1000,
@@ -33,8 +34,6 @@ async function openingValuePull() {
       obj['id'] = key;
       return obj;
     });
-
-    // console.log(JSON.stringify(array));
     
     db.query(queries.updateOpenHighPrice, [JSON.stringify(array)]);
     db.query(queries.updateOpenLowPrice, [JSON.stringify(array)]);
@@ -44,4 +43,4 @@ async function openingValuePull() {
   }
 }
 
-openingValuePull();
+export {openingValuePull};

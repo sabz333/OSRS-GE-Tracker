@@ -1,3 +1,4 @@
+import "dotenv/config";
 import * as db from "../../db/index.js";
 import queries from "../../db/queries.js";
 import axios from "axios";
@@ -189,7 +190,7 @@ async function pullGraphData(id, timeScale, chartTimeScale) {
       },
       headers: {
         "User-Agent":
-          "OSRS GE Tracker Website - @Sabz333 on the wiki & discord",
+          process.env.USER_AGENT_HEADER,
       },
     });
 

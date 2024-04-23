@@ -1,3 +1,4 @@
+import "dotenv/config";
 import * as db from "../db/index.js";
 import queries from "../db/queries.js";
 import express from "express";
@@ -17,7 +18,7 @@ async function getLatestItemData() {
       method: "get",
       baseURL: API_URL,
       headers: {
-        'User-Agent': 'OSRS GE Tracker Website - @Sabz333 on the wiki & discord'
+        'User-Agent': process.env.USER_AGENT_HEADER,
       },
     });
 
@@ -35,4 +36,4 @@ async function getLatestItemData() {
   }
 }
 
-getLatestItemData();
+export {getLatestItemData};
