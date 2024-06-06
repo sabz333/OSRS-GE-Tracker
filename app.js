@@ -1,11 +1,11 @@
 import "dotenv/config";
 import cron from "node-cron";
 import express from "express";
-import mountRoutes from "../../routes/index.js";
+import mountRoutes from "./routes/index.js";
 import serverless from "serverless-http";
 import bodyParser from "body-parser";
-import { getLatestItemData } from "../../Scripts/tickerUpdate.js";
-import { openingValuePull } from "../../Scripts/tickerUpdateStartofDay.js";
+import { getLatestItemData } from "./Scripts/tickerUpdate.js";
+import { openingValuePull } from "./Scripts/tickerUpdateStartofDay.js";
 
 const app = express();
 const port = 3000;
