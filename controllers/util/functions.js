@@ -258,6 +258,7 @@ function graphDataExtract(wikiData, chartTimeScale) {
         hour: 'numeric',
         minute: 'numeric',
         hour12: true,
+        timeZoneName: "short",
       }
       break;
     case "5D":
@@ -272,6 +273,7 @@ function graphDataExtract(wikiData, chartTimeScale) {
         hour: 'numeric',
         minute: 'numeric',
         hour12: true,
+        timeZoneName: "short",
       }
       break;
     case "1M":
@@ -286,6 +288,7 @@ function graphDataExtract(wikiData, chartTimeScale) {
         hour: 'numeric',
         minute: 'numeric',
         hour12: true,
+        timeZoneName: "short",
       }
       break;
     case "6M":
