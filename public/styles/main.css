@@ -646,6 +646,10 @@ main {
   width: 100%;
 }
 
+#mainPlot {
+  overflow: visible;
+}
+
 .key-stats {
   margin-bottom: 16px;
   padding: 16px 16px 0px 16px;
