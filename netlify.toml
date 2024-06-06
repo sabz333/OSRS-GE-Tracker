@@ -5,28 +5,4 @@
   force = true
   from = "/*"
   status = 200
-  to = "/controllers/home"
-
-  [[redirects]]
-  force = true
-  from = "/item*"
-  status = 200
-  to = "/controllers/item"
-
-   [[redirects]]
-  force = true
-  from = "/headers*"
-  status = 200
-  to = "/controllers/headers"
-
-   [[redirects]]
-  force = true
-  from = "/search*"
-  status = 200
-  to = "/controllers/search"
-
-   [[redirects]]
-  force = true
-  from = "/graph*"
-  status = 200
-  to = "/controllers/graph"
+  to = "/app/:splat"
