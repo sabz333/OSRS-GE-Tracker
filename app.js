@@ -2,7 +2,6 @@ import "dotenv/config";
 import cron from "node-cron";
 import express from "express";
 import mountRoutes from "./routes/index.js";
-import serverless from "serverless-http";
 import bodyParser from "body-parser";
 import { getLatestItemData } from "./Scripts/tickerUpdate.js";
 import { openingValuePull } from "./Scripts/tickerUpdateStartofDay.js";
@@ -29,5 +28,3 @@ cron.schedule("5 0 * * *", () => openingValuePull(), {
 app.listen(port, () => {
   console.log(`Server running on port: ${port}`);
 });
-
-export const handler = serverless(app);
