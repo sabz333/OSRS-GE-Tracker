@@ -188,6 +188,7 @@ async function loadChart(chartTimescale, dataTimescale, id) {
             },
             autoSkip: false,
           },
+          clip: false,
         },
         y: {
           border: {
