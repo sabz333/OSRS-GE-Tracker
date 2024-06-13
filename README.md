@@ -32,13 +32,16 @@ The website offers a search bar for item lookup, detailed item pages, and real-t
 
 ## Roadmap
 Features that I would like to add to the project:
-1. **Automatic price ticker updates**
-    - Currently there is a script in the Script directory that I run periodically when on the site to update the prices. Need to add cron tasks to main app.
-2. **Optimize for Mobile**
+~~1. **Automatic price ticker updates**
+    - Currently there is a script in the Script directory that I run periodically when on the site to update the prices. Need to add cron tasks to main app.~~
+    Implemented!
+2. **Better error handling**
+    - Currently error handling is basic and using the default express handling. Want to add custom error page and better db error handling.
+3. **Optimize for Mobile**
     - Configure Bootstrap containers to create a more responsive site
-3. **User Accounts**
+4. **User Accounts**
     - Goal being to be able to save individual items to homepage to track
-4. **Useful Tools**
+5. **Useful Tools**
     - High Alch Tracker
       - Page dedicated to tracking items that can be profitable to high alch for magic xp
     - Herblore Cost Saver
