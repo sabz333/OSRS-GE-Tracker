@@ -187,6 +187,7 @@ async function loadChart(chartTimescale, dataTimescale, id) {
               }
             },
             autoSkip: false,
+            sampleSize: 4,
           },
           clip: false,
         },

@@ -136,6 +136,7 @@ async function getItemDetails(itemNumber) {
     return response.rows[0];
   } catch (error) {
     console.log(error);
+    next(error);
   }
 }
 
@@ -146,6 +147,7 @@ async function searchItemDatabase(searchString) {
     return response.rows;
   } catch (error) {
     console.log(error);
+    next(error);
   }
 }
 
@@ -371,6 +373,7 @@ async function topItemsList() {
     return response.rows;
   } catch (error) {
     console.log(error);
+    next(error);
   }
 }
 
