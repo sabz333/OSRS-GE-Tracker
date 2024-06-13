@@ -32,9 +32,9 @@ The website offers a search bar for item lookup, detailed item pages, and real-t
 
 ## Roadmap
 Features that I would like to add to the project:
-~~1. **Automatic price ticker updates**
-    - Currently there is a script in the Script directory that I run periodically when on the site to update the prices. Need to add cron tasks to main app.~~
-    Implemented!
+1. **Automatic price ticker updates**
+    - ~~Currently there is a script in the Script directory that I run periodically when on the site to update the prices. Need to add cron tasks to main app.~~
+    **Implemented!**
 2. **Better error handling**
     - Currently error handling is basic and using the default express handling. Want to add custom error page and better db error handling.
 3. **Optimize for Mobile**
