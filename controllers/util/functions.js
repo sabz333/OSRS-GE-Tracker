@@ -397,7 +397,7 @@ function createTopMoverListItem (itemObject) {
         <div class="d-flex align-items-center listItemContent">${formatShort(values.currentPrice)}</div>
       </span>
     </div>
-    <div class="listItemContent">
+    <div class="listItemContent amountChanged">
       <div style="height: 24px;">
         <span class="${values.change}">
         ${formatShort(values.priceChange)}

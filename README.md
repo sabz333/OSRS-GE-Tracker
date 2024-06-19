@@ -38,7 +38,7 @@ Features that I would like to add to the project:
 2. **Better error handling**
     - Currently error handling is basic and using the default express handling. Want to add custom error page and better db error handling.
 3. **Optimize for Mobile**
-    - Configure Bootstrap containers to create a more responsive site
+    - ~~Configure Bootstrap containers to create a more responsive site~~   **Implemented!**
 4. **User Accounts**
     - Goal being to be able to save individual items to homepage to track
 5. **Useful Tools**
