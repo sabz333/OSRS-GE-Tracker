@@ -811,4 +811,22 @@ main {
   .listNameText {
     text-align: center;
   }
+
+  #headerItemCategorySelection{
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  #headerItemCategorySelection::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  #headerCards {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  #headerCards::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
 }
