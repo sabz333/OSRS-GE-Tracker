@@ -803,10 +803,7 @@ main {
   }
 
   /************Item Page Responsive Elements****************/
-
-  .chart {
-    height: unset;
-  }
+  
 }
 
 @media screen and (max-width: 576px) {
