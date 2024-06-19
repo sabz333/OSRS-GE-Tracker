@@ -1,7 +1,7 @@
 import "dotenv/config";
 import pg from "pg";
 
-pg.defaults.poolSize = 2;
+// pg.defaults.poolSize = 2;
 
 const connectionString = process.env.DATABASE_URL;
 
