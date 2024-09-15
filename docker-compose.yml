@@ -1,7 +1,6 @@
 services:
   node-server:
-    build: .
-    image: custom-node:latest
+    image: sabz333/osrs-node:latest
     ports:
       - 8080:3000
     env_file:
