@@ -15,6 +15,10 @@ services:
       DB_PORT: 5432
     depends_on:
       - postgresdb
+    secrets:
+      - POSTGRES_USER
+      - POSTGRES_DB
+      - POSTGRES_PASSWORD
 
   postgresdb:
     image: postgres:16.4
@@ -25,5 +29,9 @@ services:
       POSTGRES_PASSWORD: /run/secrets/POSTGRES_PASSWORD
       POSTGRES_USER: /run/secrets/POSTGRES_USER
       POSTGRES_DB: /run/secrets/POSTGRES_DB
+    secrets:
+      - POSTGRES_USER
+      - POSTGRES_DB
+      - POSTGRES_PASSWORD
 volumes:
   db-data:
