@@ -7,11 +7,11 @@ import { secrets } from "docker-secret";
 // const connectionString = process.env.DATABASE_URL;
 // const connectionString = "postgresql://admin:runescape@psql-db:5432/OSRS";
 
-const username = process.env.DB_USER || secrets.DB_USER;
-const host = process.env.DB_HOST || secrets.DB_HOST;
-const database = process.env.DB_DBNAME || secrets.DB_DBNAME;
-const password = process.env.DB_PASSWORD || secrets.DB_PASSWORD;
-const dbPort = process.env.DB_PORT || secrets.DB_PORT;
+const username = process.env.DB_USER || secrets.POSTGRES_USER;
+const host = process.env.DB_HOST || secrets.POSTGRES_HOST;
+const database = process.env.DB_DBNAME || secrets.POSTGRES_DB;
+const password = process.env.DB_PASSWORD || secrets.POSTGRES_PASSWORD;
+const dbPort = process.env.DB_PORT || secrets.POSTGRES_PORT;
 
 const pool = new pg.Pool({
   user: username,
