@@ -1,0 +1,32 @@
+services:
+  node-server:
+    build: .
+    image: custom-node:latest
+    ports:
+      - 8080:3000
+    env_file:
+      - ./.env
+    environment:
+      - NODE_ENV=production
+      - USER_AGENT_HEADER=OSRS GE Tracker Website - @Sabz333 on the wiki & discord
+      - DB_USER=admin
+      - DB_HOST=postgresdb
+      - DB_DBNAME=OSRS
+      - DB_PASSWORD=runescape
+      - DB_PORT=5432
+    depends_on:
+      - postgresdb
+
+  postgresdb:
+    image: postgres:16.4
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: runescape
+      POSTGRES_USER: admin
+      POSTGRES_DB: OSRS
+    ports:
+      - 5450:5432
+volumes:
+  db-data:

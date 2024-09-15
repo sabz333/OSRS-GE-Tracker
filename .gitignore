@@ -131,3 +131,4 @@ dist
 
 # ignore postgres
 postgres
+OS
