@@ -26,7 +26,5 @@ services:
       POSTGRES_PASSWORD: runescape
       POSTGRES_USER: admin
       POSTGRES_DB: OSRS
-    ports:
-      - 5450:5432
 volumes:
   db-data:
