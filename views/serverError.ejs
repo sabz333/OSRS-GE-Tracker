@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Old School Runescape GE Tracker</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/main.css" />
+  </head>
+  <header>
+    <div class="container-fluid d-flex flex-row py-3 px-1 px-sm-2" id="mainHeader">
+      <div
+        class="col-4 d-flex flex-row justify-content-start align-items-center"
+      >
+        <div class="d-flex" id="hamMenu">
+          <span class="material-symbols-outlined"> menu </span>
+        </div>
+        <a class="ps-3" id="logo" href="/">
+          <img src="/assets/logo/logo_alt.svg" alt="OSRS GE Tracker Logo" />
+        </a>
+      </div>
+      <div class="col-4"></div>
+      <div class="col-4 d-flex justify-content-end align-items-center">
+        <div class="text-center" id="user">USERS COMING SOON!</div>
+      </div>
+    </div>
+  </header>
+  <body>
+    <main class="container-xl">
+      <div class="container d-flex-column me-auto">
+        <div class="container d-flex justify-content-center">
+          <h1>Item Not Found</h1>
+        </div>
+        <div class="container d-flex justify-content-center">
+          <h2>Please return back</h2>
+        </div>
+      </div>
+      <div class="container d-flex justify-content-center" dis>
+        <img
+          src="/assets/imgs/server_error.png"
+          alt="server error image"
+          class="img-fluid"
+        />
+      </div>
+    </main>
+
+    <%- include('partials/footer.ejs'); -%>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
