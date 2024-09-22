@@ -20,7 +20,7 @@ mountRoutes(app);
 openingValuePull();
 
 // cron schedule to automatically update item values every 5 min
-cron.schedule("*/5 * * * *", () => getLatestItemData(), {
+cron.schedule("1-56/5 * * * *", () => getLatestItemData(), {
   scheduled: true,
 });
 

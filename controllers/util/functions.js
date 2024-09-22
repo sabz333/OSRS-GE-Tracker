@@ -233,19 +233,33 @@ async function pullGraphData(id, timeScale, chartTimeScale) {
 
     const timeSince = Date.now() - UTCMidnight.getTime();
     const pointsInDay = Math.floor(timeSince / 300000) * -1;
+    let midnightIndex = -1;
 
     var trimmedData;
 
     // switch statement to trim data approriately based on user selection and timestep
     switch (chartTimeScale) {
       case "1D":
-        trimmedData = response.data.data.slice(pointsInDay);
+        for (let i = 0; i < response.data.data.length; i++) {
+          if (
+            response.data.data[i]["timestamp"] ===
+            UTCMidnight.getTime() / 1000
+          ) {
+            midnightIndex = i;
+            break;
+          }
+        }
+        if (midnightIndex >= 0) {
+          trimmedData = response.data.data.slice(midnightIndex);
+        } else {
+          trimmedData = response.data.data.slice(pointsInDay);
+        }
         break;
       case "5D":
-        trimmedData = response.data.data.slice(-119);
+        trimmedData = response.data.data.slice(-121);
         break;
       case "1M":
-        trimmedData = response.data.data.slice(-119);
+        trimmedData = response.data.data.slice(-121);
         break;
       case "6M":
         trimmedData = response.data.data.slice(-182);
