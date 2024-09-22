@@ -6,6 +6,8 @@ SELECT ticker_summary.id,
   low_price,
   high_vol,
   low_vol,
+  open_high_vol,
+  open_low_vol,
   name,
   icon
 FROM ticker_summary 
@@ -58,19 +60,44 @@ FROM json_to_recordset($1)
 WHERE ticker_summary.id = x."id"
   AND x."avgLowPrice" IS NOT NULL;`;
 
+const updateOpenHighVol = `
+UPDATE ticker_summary
+SET open_high_vol = x."highPriceVolume"
+FROM json_to_recordset($1)
+  AS x ("avgHighPrice" INT,
+    "highPriceVolume" INT,
+    "avgLowPrice" INT,
+    "lowPriceVolume" INT,
+    "id" INT)
+WHERE ticker_summary.id = x."id"
+  AND x."highPriceVolume" IS NOT NULL;`;
+
+const updateOpenLowVol = `
+UPDATE ticker_summary
+SET open_low_vol = x."lowPriceVolume"
+FROM json_to_recordset($1)
+  AS x ("avgHighPrice" INT,
+    "highPriceVolume" INT,
+    "avgLowPrice" INT,
+    "lowPriceVolume" INT,
+    "id" INT)
+WHERE ticker_summary.id = x."id"
+  AND x."lowPriceVolume" IS NOT NULL;`;
+
 const getItemDetails = `
 SELECT * FROM items
 JOIN ticker_summary ON items.id = ticker_summary.id
 WHERE items.id = $1;`;
 
 const itemSearchQuery = `
-SELECT items.id, items.name, open_high, open_low, high_vol, low_vol, high_price, low_price FROM items
+SELECT items.id, items.name, open_high, open_low, high_vol, low_vol, high_price, low_price, open_high_vol, open_low_vol
+FROM items
 JOIN ticker_summary ON items.id = ticker_summary.id
 WHERE items.name ILIKE '%' || $1 || '%'
 ORDER BY name ASC;`;
 
 const getTopItems = `
-SELECT ticker_summary.id, open_high, open_low, high_price, low_price, high_vol, low_vol, name
+SELECT ticker_summary.id, open_high, open_low, high_price, low_price, high_vol, low_vol, name, open_high_vol, open_low_vol
 FROM ticker_summary
 JOIN items ON items.id = ticker_summary.id
 WHERE high_vol IS NOT NULL
@@ -87,6 +114,8 @@ export default {
   updateTickerLastUpdate,
   updateOpenHighPrice,
   updateOpenLowPrice,
+  updateOpenHighVol,
+  updateOpenLowVol,
   getItemDetails,
   itemSearchQuery,
   getTopItems,

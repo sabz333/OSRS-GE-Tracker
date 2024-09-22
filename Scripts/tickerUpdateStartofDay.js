@@ -4,6 +4,7 @@ import queries from "../db/queries.js";
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
+import { WebError } from "../errors/Errors.js";
 
 const app = express();
 const port = 3000;
@@ -27,7 +28,7 @@ async function openingValuePull() {
       params: {
         timestamp: date.valueOf()/1000,
       },
-    });
+    }).catch((err) => {throw new WebError("Could not pull 00:00 UTC wiki data", {cause: err}).display()});
 
     const array = Object.keys(response.data.data).map(key => {
       let obj = response.data.data[key];
@@ -37,9 +38,11 @@ async function openingValuePull() {
     
     db.query(queries.updateOpenHighPrice, [JSON.stringify(array)]);
     db.query(queries.updateOpenLowPrice, [JSON.stringify(array)]);
+    db.query(queries.updateOpenHighVol, [JSON.stringify(array)]);
+    db.query(queries.updateOpenLowVol, [JSON.stringify(array)]);
     
   } catch (error) {
-    console.log(error);
+    throw(error);
   }
 }
 

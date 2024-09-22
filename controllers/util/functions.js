@@ -3,6 +3,7 @@ import * as db from "../../db/index.js";
 import queries from "../../db/queries.js";
 import axios from "axios";
 import { JSDOM } from "jsdom";
+import { DatabaseError, WebError } from "../../errors/Errors.js";
 
 const months = [
   "January",
@@ -23,10 +24,15 @@ const months = [
 async function getNewsArticles() {
   try {
     const newsArray = [];
-    const response = await axios.request(
-      "https://secure.runescape.com/m=news/archive?oldschool=1",
-      { responseType: "document" }
-    );
+    const response = await axios
+      .request("https://secure.runescape.com/m=news/archive?oldschool=1", {
+        responseType: "document",
+      })
+      .catch((err) => {
+        throw new WebError("Could not fetch OSRS News Articles", {
+          cause: err,
+        }).display();
+      });
     const dom = new JSDOM(response.data);
 
     const nodeList = dom.window.document.querySelectorAll(".news-list-article");
@@ -35,7 +41,7 @@ async function getNewsArticles() {
 
     return newsArray;
   } catch (error) {
-    console.log(error);
+    return ["Could not retrieve articles"];
   }
 }
 
@@ -45,7 +51,9 @@ async function getTop5Tickers(category) {
     const response = await db.query(queries.getTopTickers, [category]);
     return response.rows;
   } catch (error) {
-    console.log(error);
+    throw new DatabaseError("Could not query Top 5 Tickers from database", {
+      cause: error,
+    });
   }
 }
 
@@ -74,14 +82,23 @@ function dataChangeCalculation(itemObject) {
     itemObject["high_price"] * highVolWeight +
       itemObject["low_price"] * lowVolWeight
   );
+  const openHighVolWeight =
+    itemObject["open_high_vol"] /
+    (itemObject["open_high_vol"] + itemObject["open_low_vol"]);
+  const openLowVolWeight =
+    itemObject["open_low_vol"] /
+    (itemObject["open_high_vol"] + itemObject["open_low_vol"]);
+
   const openingPrice = Math.round(
-    (itemObject["open_high"] + itemObject["open_low"]) / 2
+    itemObject["open_high"] * openHighVolWeight +
+      itemObject["open_low"] * openLowVolWeight
   );
   const percentChange = ((currentPrice - openingPrice) / openingPrice) * 100;
   const priceChange = currentPrice - openingPrice;
   let arrow = "";
   let change = "";
 
+  // Set item arrows and coloring
   if (priceChange > 0) {
     arrow = "arrow_upward";
     change = "positive";
@@ -112,7 +129,9 @@ function createHeaderCard(itemObject) {
   <a class="headerCardLink" href="/item/${values.id}">
   <div class="headerCard container d-flex flex-row align-items-center p-2">
     <div
-      class="price-arrow ${values.change} d-flex justify-content-center align-items-center"
+      class="price-arrow ${
+        values.change
+      } d-flex justify-content-center align-items-center"
     >
       <span class="material-symbols-rounded">${values.arrow}</span>
     </div>
@@ -135,8 +154,9 @@ async function getItemDetails(itemNumber) {
     const response = await db.query(queries.getItemDetails, [itemNumber]);
     return response.rows[0];
   } catch (error) {
-    console.log(error);
-    next(error);
+    throw new DatabaseError("Could not retrieve item details from database", {
+      cause: error,
+    });
   }
 }
 
@@ -146,8 +166,7 @@ async function searchItemDatabase(searchString) {
     const response = await db.query(queries.itemSearchQuery, [searchString]);
     return response.rows;
   } catch (error) {
-    console.log(error);
-    next(error);
+    throw new DatabaseError("Search query failed", { cause: error });
   }
 }
 
@@ -162,7 +181,9 @@ function createSearchResult(itemObject) {
       <div class="foundItem">
         ${itemObject.name}
       </div>
-      <img src="https://services.runescape.com/m=itemdb_oldschool/obj_sprite.gif?id=${values.id}"></img>
+      <img src="https://services.runescape.com/m=itemdb_oldschool/obj_sprite.gif?id=${
+        values.id
+      }"></img>
     </div>
     <div class="foundItemPricing">
       <div class="foundItemPrice">
@@ -170,7 +191,9 @@ function createSearchResult(itemObject) {
       </div>
       <span class="roundedPercentContainer d-flex ${values.change}">
         <div>
-          <span class="material-symbols-rounded d-flex arrow">${values.arrow}</span>
+          <span class="material-symbols-rounded d-flex arrow">${
+            values.arrow
+          }</span>
         </div>
         ${values.percentChange}%
       </span>
@@ -183,18 +206,23 @@ function createSearchResult(itemObject) {
 // function to pull timeseries data from OSRS wiki api
 async function pullGraphData(id, timeScale, chartTimeScale) {
   try {
-    const response = await axios.request({
-      url: "/timeseries",
-      baseURL: "https://prices.runescape.wiki/api/v1/osrs",
-      params: {
-        id: id,
-        timestep: timeScale,
-      },
-      headers: {
-        "User-Agent":
-          process.env.USER_AGENT_HEADER,
-      },
-    });
+    const response = await axios
+      .request({
+        url: "/timeseries",
+        baseURL: "https://prices.runescape.wiki/api/v1/osrs",
+        params: {
+          id: id,
+          timestep: timeScale,
+        },
+        headers: {
+          "User-Agent": process.env.USER_AGENT_HEADER,
+        },
+      })
+      .catch((err) => {
+        throw new WebError("Could not fetch Graph data from Wiki", {
+          cause: err,
+        }).display();
+      });
 
     // required to determine number of points since start of day
     const UTCMidnight = new Date();
@@ -232,7 +260,7 @@ async function pullGraphData(id, timeScale, chartTimeScale) {
 
     return trimmedData;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 }
 
@@ -255,13 +283,13 @@ function graphDataExtract(wikiData, chartTimeScale) {
       };
       optionsTooltip = {
         month: "short",
-        day: 'numeric',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
         hour12: true,
         timeZoneName: "short",
-      }
+      };
       break;
     case "5D":
       options = {
@@ -270,13 +298,13 @@ function graphDataExtract(wikiData, chartTimeScale) {
       };
       optionsTooltip = {
         month: "short",
-        day: 'numeric',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
         hour12: true,
         timeZoneName: "short",
-      }
+      };
       break;
     case "1M":
       options = {
@@ -285,13 +313,13 @@ function graphDataExtract(wikiData, chartTimeScale) {
       };
       optionsTooltip = {
         month: "short",
-        day: 'numeric',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
         hour12: true,
         timeZoneName: "short",
-      }
+      };
       break;
     case "6M":
       options = {
@@ -321,10 +349,12 @@ function graphDataExtract(wikiData, chartTimeScale) {
   }
 
   const dateTimeFormat = new Intl.DateTimeFormat("en-US", options);
-  const dateTimeFormatTooltip = new Intl.DateTimeFormat("en-US", optionsTooltip);
+  const dateTimeFormatTooltip = new Intl.DateTimeFormat(
+    "en-US",
+    optionsTooltip
+  );
 
   wikiData.forEach((row) => {
-
     // Calculations
     const volumeTotal = row["highPriceVolume"] + row["lowPriceVolume"];
     const highVolWeight = row["highPriceVolume"] / volumeTotal;
@@ -336,11 +366,11 @@ function graphDataExtract(wikiData, chartTimeScale) {
     priceArr.push(actualPrice);
     volumeArr.push(volumeTotal);
     timeArr.push(dateTimeFormat.format(new Date(row["timestamp"] * 1000)));
-    toolTipArr.push(dateTimeFormatTooltip.format(new Date(row["timestamp"] * 1000)));
-
+    toolTipArr.push(
+      dateTimeFormatTooltip.format(new Date(row["timestamp"] * 1000))
+    );
   });
-  
-  
+
   return {
     price: priceArr,
     volume: volumeArr,
@@ -350,20 +380,25 @@ function graphDataExtract(wikiData, chartTimeScale) {
   };
 }
 
-// function to format numeric values
+// function to format numeric values to OSRS standard
 function formatShort(number) {
   const digits = 2;
 
   const lookup = [
-    {value: 1, symbol: " gp"},
-    {value: 1e3, symbol: "K"},
-    {value: 1e6, symbol: "M"},
-    {value: 1e9, symbol: "B"},
+    { value: 1, symbol: " gp" },
+    { value: 1e3, symbol: "K" },
+    { value: 1e6, symbol: "M" },
+    { value: 1e9, symbol: "B" },
   ];
   const regexp = /\.0+$|(?<=\.[0-9]*[1-9])0+$/;
-  const newNumber = lookup.findLast(item => Math.abs(number) >= item.value);
+  const newNumber = lookup.findLast((item) => Math.abs(number) >= item.value);
 
-  return newNumber ? (number / newNumber.value).toFixed(digits).replace(regexp,"").concat(newNumber.symbol) : "0";
+  return newNumber
+    ? (number / newNumber.value)
+        .toFixed(digits)
+        .replace(regexp, "")
+        .concat(newNumber.symbol)
+    : "0";
 }
 
 // function to pull top items based on vol from db
@@ -372,20 +407,21 @@ async function topItemsList() {
     const response = await db.query(queries.getTopItems);
     return response.rows;
   } catch (error) {
-    console.log(error);
-    next(error);
+    throw new DatabaseError("Could not fetch Top Items List", { cause: error });
   }
 }
 
 // create list item for top items trading
-function createTopMoverListItem (itemObject) {
+function createTopMoverListItem(itemObject) {
   const values = dataChangeCalculation(itemObject);
 
   return `<li>
   <a class="listItemLink" href="/item/${values.id}">
   <div class="listItem">
     <div class="listImage">
-      <img src="https://services.runescape.com/m=itemdb_oldschool/obj_sprite.gif?id=${values.id}" alt="item image">
+      <img src="https://services.runescape.com/m=itemdb_oldschool/obj_sprite.gif?id=${
+        values.id
+      }" alt="item image">
       <div class="listName">
         <div class="listNameText">
           ${itemObject.name}
@@ -394,7 +430,9 @@ function createTopMoverListItem (itemObject) {
     </div>
     <div class="listItemContent">
       <span>
-        <div class="d-flex align-items-center listItemContent">${formatShort(values.currentPrice)}</div>
+        <div class="d-flex align-items-center listItemContent">${formatShort(
+          values.currentPrice
+        )}</div>
       </span>
     </div>
     <div class="listItemContent amountChanged">
@@ -414,7 +452,7 @@ function createTopMoverListItem (itemObject) {
     </div>
   </div>
   </a>
-</li>`
+</li>`;
 }
 
 export {

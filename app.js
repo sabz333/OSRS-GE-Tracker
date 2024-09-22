@@ -16,11 +16,16 @@ app.use("/item", express.static("public"));
 
 mountRoutes(app);
 
+// update day values on first startup
+openingValuePull();
+
+// cron schedule to automatically update item values every 5 min
 cron.schedule("*/5 * * * *", () => getLatestItemData(), {
   scheduled: true,
 });
 
-cron.schedule("5 0 * * *", () => openingValuePull(), {
+// cron scheudle to automatically update opening values daily at 00:06 UTC
+cron.schedule("6 0 * * *", () => openingValuePull(), {
   scheduled: true,
   timezone: "Etc/UTC",
 });

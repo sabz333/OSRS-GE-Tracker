@@ -4,6 +4,7 @@ import queries from "../db/queries.js";
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
+import { WebError } from "../errors/Errors.js";
 
 const app = express();
 const port = 3000;
@@ -20,7 +21,7 @@ async function getLatestItemData() {
       headers: {
         'User-Agent': process.env.USER_AGENT_HEADER,
       },
-    });
+    }).catch((err) => {throw new WebError("Cannot pull latest item data from wiki", {cause: err}).display()});
 
     const array = Object.keys(response.data.data).map(key => {
       let obj = response.data.data[key];
@@ -32,7 +33,7 @@ async function getLatestItemData() {
     db.query(queries.updateTickerLastUpdate, [response.data.timestamp]);
     
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 }
 
