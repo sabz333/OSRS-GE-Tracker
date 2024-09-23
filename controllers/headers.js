@@ -1,8 +1,6 @@
 import Router from "express-promise-router";
-import {
-  getTop5Tickers,
-  createHeaderCard,
-} from "./util/functions.js"
+import getTop5Tickers from "../functions/getTop5Tickers.js";
+import createHeaderCard from "../functions/createHeaderCard.js";
 
 const router = new Router();
 

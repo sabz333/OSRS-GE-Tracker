@@ -1,8 +1,6 @@
 import Router from "express-promise-router";
-import {
-  searchItemDatabase,
-  createSearchResult,
-} from "./util/functions.js"
+import searchItemDatabase from "../functions/searchItemDatabase.js";
+import createSearchResult from "../functions/createSearchResult.js";
 
 const router = new Router();
 

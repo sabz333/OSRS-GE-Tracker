@@ -1,12 +1,10 @@
 import Router from "express-promise-router";
-import {
-  months,
-  getNewsArticles,
-  getTop5Tickers,
-  createHeaderCard,
-  topItemsList,
-  createTopMoverListItem,
-} from "./util/functions.js";
+import getNewsArticles from "../functions/getNewsArticles.js"
+import getTop5Tickers from "../functions/getTop5Tickers.js";
+import createHeaderCard from "../functions/createHeaderCard.js";
+import createTopMoverListItem from "../functions/createTopMoverListItem.js";
+import topItemsList from "../functions/topItemsList.js";
+import { months } from "./util/constantVariables.js";
 
 // router for rendering and sending home page
 

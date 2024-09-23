@@ -1,16 +1,13 @@
 import Router from "express-promise-router";
-import {
-  getTop5Tickers,
-  createHeaderCard,
-  getItemDetails,
-  dataChangeCalculation,
-  formatShort,
-  pullGraphData,
-  graphDataExtract,
-} from "./util/functions.js";
+import getTop5Tickers from "../functions/getTop5Tickers.js";
+import dataChangeCalculation from "../functions/dataChangeCalculation.js";
+import createHeaderCard from "../functions/createHeaderCard.js";
+import getItemDetails from "../functions/getItemDetails.js";
+import pullGraphData from "../functions/pullGraphData.js";
+import graphDataExtract from "../functions/graphDataExtract.js";
+import formatShort from "../functions/formatShort.js";
 
 // router for rendering individual item page
-
 const router = new Router();
 const categoryID = 10;
 const mainStyleSheet = "styles/main.css";

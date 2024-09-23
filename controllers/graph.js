@@ -1,8 +1,6 @@
 import Router from "express-promise-router";
-import {
-  pullGraphData,
-  graphDataExtract,
-} from "./util/functions.js"
+import pullGraphData from "../functions/pullGraphData.js";
+import graphDataExtract from "../functions/graphDataExtract.js";
 
 const router = new Router();
 
