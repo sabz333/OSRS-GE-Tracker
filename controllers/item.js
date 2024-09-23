@@ -32,6 +32,7 @@ router.get("/:id", async (req, res) => {
   });
   const itemDetails = await getItemDetails(req.params.id);
   const itemCalcs = dataChangeCalculation(itemDetails);
+
   // year data min & max & average volume
   const rawYearData = await pullGraphData(req.params.id, "24h", "1Y");
   const yearData = graphDataExtract(rawYearData, "1Y");

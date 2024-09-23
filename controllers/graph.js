@@ -7,7 +7,6 @@ import {
 const router = new Router();
 
 // router for graph data request of individual item based on time scale
-
 router.get("/", async (req, res) => {
   const request = req.query;
   const rawGraphData = await pullGraphData(request.id, request.timestep, request.timeScale);
