@@ -8,7 +8,7 @@ const database = process.env.DB_DBNAME || secrets.POSTGRES_DB;
 const password = process.env.DB_PASSWORD || secrets.POSTGRES_PASSWORD;
 const dbPort = process.env.DB_PORT || secrets.POSTGRES_PORT;
 
-const pool = new pg.Pool({
+export const pool = new pg.Pool({
   user: username,
   host: host,
   database: database,

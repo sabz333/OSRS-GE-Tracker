@@ -8,6 +8,7 @@ import { errorHandler } from "./middlewares/errorhandlers.js";
 import { getLatestItemData } from "./Scripts/tickerUpdate.js";
 import { openingValuePull } from "./Scripts/tickerUpdateStartofDay.js";
 import pgS from "connect-pg-simple";
+import * as db from "../db/index.js"
 import passport from "passport";
 
 const app = express();
@@ -17,7 +18,7 @@ const pgSession = pgS(session);
 app.use(
   session({
     store: new pgSession({
-      pool: db,
+      pool: db.pool,
       tableName: "sessions",
     }),
     secret: process.env.SESSION_SECRET,
