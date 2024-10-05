@@ -1,18 +1,36 @@
 import "dotenv/config";
 import cron from "node-cron";
 import express from "express";
+import session from "express-session";
 import mountRoutes from "./routes/index.js";
 import bodyParser from "body-parser";
 import { errorHandler } from "./middlewares/errorhandlers.js";
 import { getLatestItemData } from "./Scripts/tickerUpdate.js";
 import { openingValuePull } from "./Scripts/tickerUpdateStartofDay.js";
+import pgS from "connect-pg-simple";
+import passport from "passport";
 
 const app = express();
 const port = process.env.PORT || 3000;
+const pgSession = pgS(session);
 
+app.use(
+  session({
+    store: new pgSession({
+      pool: db,
+      tableName: "sessions",
+    }),
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUnitialized: true,
+    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
+  })
+);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/", express.static("public"));
 app.use("/item", express.static("public"));
+app.use(passport.initialize());
+app.use(passport.session());
 
 mountRoutes(app);
 
@@ -29,7 +47,6 @@ cron.schedule("6 0 * * *", () => openingValuePull(), {
   scheduled: true,
   timezone: "Etc/UTC",
 });
-
 
 app.listen(port, () => {
   console.log(`Server running on port: ${port}`);
