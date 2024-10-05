@@ -2,11 +2,6 @@ import "dotenv/config";
 import pg from "pg";
 import { secrets } from "docker-secret";
 
-// pg.defaults.poolSize = 2;
-
-// const connectionString = process.env.DATABASE_URL;
-// const connectionString = "postgresql://admin:runescape@psql-db:5432/OSRS";
-
 const username = process.env.DB_USER || secrets.POSTGRES_USER;
 const host = process.env.DB_HOST || secrets.POSTGRES_HOST;
 const database = process.env.DB_DBNAME || secrets.POSTGRES_DB;
