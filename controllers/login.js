@@ -4,10 +4,13 @@ const router = new Router();
 const mainStyleSheet = "styles/main.css";
 
 router.get("/", async (req, res) => {
-
-  res.render("login.ejs", {
-    mainStyleSheet: mainStyleSheet,
-  });
+  if (req.isAuthenticated()) {
+    res.redirect("/dashboard");
+  } else {
+    res.render("login.ejs", {
+      mainStyleSheet: mainStyleSheet,
+    });
+  }
 });
 
 export default router;

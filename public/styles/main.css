@@ -87,6 +87,10 @@ body {
   cursor: pointer;
 }
 
+#user:hover > span {
+  color: rgb(24, 90, 188);
+}
+
 /****************************** Header card formatting **********************************/
 
 .headerCard {
@@ -734,8 +738,8 @@ main {
 
 /*********************************Login Page************************************************/
 .sign-in-main {
-  background-image: radial-gradient(closest-side at 50% 135%, #ffffff 50%, #eceff1 100%);
-
+  /* background-image: radial-gradient(closest-side at 50% 135%, #ffffff 50%, #eceff1 100%); */
+  background-color: rgb(248,249,250);
 }
 
 

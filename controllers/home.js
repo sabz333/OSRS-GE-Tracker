@@ -16,6 +16,7 @@ const mainStyleSheet = "styles/main.css";
 router.get("/", async (req, res) => {
   const categoryID = 10;
   const today = new Date();
+  let dashboardEnable = false;
   const monthYear = months[today.getMonth()] + " " + today.getFullYear();
   const headerItems = await getTop5Tickers(categoryID);
   const renderedCards = headerItems.map((item) => {
@@ -27,6 +28,10 @@ router.get("/", async (req, res) => {
     return createTopMoverListItem(item);
   })
 
+  if (req.isAuthenticated()) {
+    dashboardEnable = true;
+  }
+
   res.render("home.ejs", {
     mainStyleSheet: mainStyleSheet,
     monthYearString: monthYear,
@@ -34,6 +39,7 @@ router.get("/", async (req, res) => {
     headerCardArray: renderedCards,
     topItemListArray: renderedListItems,
     catId: categoryID,
+    dashboardBoolean: dashboardEnable,
   });
 });
 

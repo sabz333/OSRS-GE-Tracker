@@ -23,6 +23,7 @@ const options = {
 
 router.get("/:id", async (req, res) => {
   const itemId = req.params.id;
+  let dashboardEnable = false;
   const headerItems = await getTop5Tickers(categoryID);
   const renderedCards = headerItems.map((item) => {
     return createHeaderCard(item);
@@ -53,6 +54,10 @@ router.get("/:id", async (req, res) => {
   itemDetails.high_alch = formatShort(itemDetails.high_alch);
   itemDetails.low_alch = formatShort(itemDetails.low_alch);
 
+  if (req.isAuthenticated()) {
+    dashboardEnable = true;
+  }
+
   res.render("item.ejs", {
     mainStyleSheet: mainStyleSheet,
     headerCardArray: renderedCards,
@@ -68,6 +73,7 @@ router.get("/:id", async (req, res) => {
     updateTime: new Intl.DateTimeFormat("en-US", options).format(
       new Date(itemDetails["last_update"] * 1000)
     ),
+    dashboardBoolean: dashboardEnable,
   });
 });
 

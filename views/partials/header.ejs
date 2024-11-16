@@ -36,8 +36,17 @@
           </a>
         </div>
         <div class="col-4"></div>
-        <div class="col-4 d-flex justify-content-end align-items-center">
-          <a class="text-center" id="user" href="/login">LOGIN</a>
+        <div class="col-4 pe-3">
+          <div class="container d-flex flex-row-reverse">
+            <a class="d-flex flex-column align-items-center text-decoration-none" id="user" href="/dashboard">
+              <span class="material-symbols-outlined" style="font-size: 36px;">
+                person
+                </span>
+                <span style="font-size: 18px;">
+                  <%= dashboardBoolean ? "DASHBOARD" : "LOGIN" %>
+                </span>
+            </a>
+          </div>
         </div>
       </div>
     </header>
