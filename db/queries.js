@@ -107,6 +107,11 @@ AND open_high > 10
 ORDER BY high_vol DESC
 LIMIT 15;`;
 
+const getUserTickers = `
+SELECT (saved_tickers).item_ids, (saved_tickers).item_costs
+FROM users
+WHERE id = $1`;
+
 
 export default {
   getTopTickers,
@@ -119,4 +124,5 @@ export default {
   getItemDetails,
   itemSearchQuery,
   getTopItems,
+  getUserTickers,
 };
