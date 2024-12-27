@@ -1,4 +1,4 @@
-// calculate current ticker pricing based on opening values
+// calculate current ticker pricing based on opening values or initial price if passed
 export default function dataChangeCalculation(itemObject, initialPrice) {
   // Data integrity check
   if (!itemObject["high_vol"]) {

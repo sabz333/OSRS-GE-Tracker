@@ -1,7 +1,8 @@
 import dataChangeCalculation from "./dataChangeCalculation.js";
 import formatShort from "./formatShort.js";
 
-// create list item for top items trading
+// create list item for rendering table of prices, if initial price is not passed
+// data is calc'd using opening values
 export default function createDefaultListItem(itemObject, initialPrice = "") {
   const values = dataChangeCalculation(itemObject, initialPrice);
 
