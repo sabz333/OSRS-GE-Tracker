@@ -2,8 +2,8 @@ import dataChangeCalculation from "./dataChangeCalculation.js";
 import formatShort from "./formatShort.js";
 
 // create list item for top items trading
-export default function createDefaultListItem(itemObject) {
-  const values = dataChangeCalculation(itemObject);
+export default function createDefaultListItem(itemObject, initialPrice = "") {
+  const values = dataChangeCalculation(itemObject, initialPrice);
 
   return `<li>
   <a class="listItemLink" href="/item/${values.id}">

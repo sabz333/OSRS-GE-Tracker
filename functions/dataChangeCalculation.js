@@ -1,5 +1,5 @@
 // calculate current ticker pricing based on opening values
-export default function dataChangeCalculation(itemObject) {
+export default function dataChangeCalculation(itemObject, initialPrice) {
   // Data integrity check
   if (!itemObject["high_vol"]) {
     itemObject["high_vol"] = 1;
@@ -26,17 +26,24 @@ export default function dataChangeCalculation(itemObject) {
     itemObject["high_price"] * highVolWeight +
       itemObject["low_price"] * lowVolWeight
   );
-  const openHighVolWeight =
-    itemObject["open_high_vol"] /
-    (itemObject["open_high_vol"] + itemObject["open_low_vol"]);
-  const openLowVolWeight =
-    itemObject["open_low_vol"] /
-    (itemObject["open_high_vol"] + itemObject["open_low_vol"]);
 
-  const openingPrice = Math.round(
-    itemObject["open_high"] * openHighVolWeight +
-      itemObject["open_low"] * openLowVolWeight
-  );
+  let openingPrice = 0;
+
+  if (typeof initialPrice === "number") {
+    openingPrice = initialPrice;
+  } else {
+    const openHighVolWeight =
+      itemObject["open_high_vol"] /
+      (itemObject["open_high_vol"] + itemObject["open_low_vol"]);
+    const openLowVolWeight =
+      itemObject["open_low_vol"] /
+      (itemObject["open_high_vol"] + itemObject["open_low_vol"]);
+  
+    openingPrice = Math.round(
+      itemObject["open_high"] * openHighVolWeight +
+        itemObject["open_low"] * openLowVolWeight
+    );
+  }
   const percentChange = ((currentPrice - openingPrice) / openingPrice) * 100;
   const priceChange = currentPrice - openingPrice;
   let arrow = "";

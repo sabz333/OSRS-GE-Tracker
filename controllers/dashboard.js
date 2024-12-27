@@ -19,8 +19,9 @@ router.get("/", async (req, res) => {
     dashboardEnable = true;
     const userTickers = await getUserTickers(req.user.id);
     const userTickerTable = await userTickerList(userTickers.item_ids);
-    const renderedTickerTable = userTickerTable.map((item) => {
-      return createDefaultListItem(item);
+    const renderedTickerTable = userTickers.item_ids.map((item, idx) => {
+      const itemObject = userTickerTable.find((ticker) => ticker.id === item);
+      return createDefaultListItem(itemObject, userTickers.item_costs[idx]);
     })
 
     res.render("dashboard.ejs", {
