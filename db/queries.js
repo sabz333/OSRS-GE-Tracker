@@ -107,10 +107,29 @@ AND open_high > 10
 ORDER BY high_vol DESC
 LIMIT 15;`;
 
+const findUser = `
+SELECT * FROM users
+WHERE email = $1;`;
+
+const createNewUser = `
+INSERT INTO users (firstName, lastName, email, password)
+VALUES ($1, $2, $3, $4)
+RETURNING id;`;
+
+const createNewUserTickers = `
+INSERT INTO ticker_users (item_ids, item_costs, user_id)
+VALUES ($1, $2, $3);`;
+
 const getUserTickers = `
-SELECT (saved_tickers).item_ids, (saved_tickers).item_costs
-FROM users
-WHERE id = $1`;
+SELECT item_ids, item_costs
+FROM ticker_users
+WHERE user_id = $1`;
+
+const getUserTickerTable = `
+SELECT ticker_summary.id, open_high, open_low, high_price, low_price, high_vol, low_vol, name, open_high_vol, open_low_vol
+FROM ticker_summary
+JOIN items ON items.id = ticker_summary.id
+WHERE ticker_summary.id = ANY($1::INT[]);`
 
 
 export default {
@@ -124,5 +143,9 @@ export default {
   getItemDetails,
   itemSearchQuery,
   getTopItems,
+  findUser,
+  createNewUser,
+  createNewUserTickers,
   getUserTickers,
+  getUserTickerTable,
 };

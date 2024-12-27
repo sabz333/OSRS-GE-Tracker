@@ -2,7 +2,7 @@ import dataChangeCalculation from "./dataChangeCalculation.js";
 import formatShort from "./formatShort.js";
 
 // create list item for top items trading
-export default function createTopMoverListItem(itemObject) {
+export default function createDefaultListItem(itemObject) {
   const values = dataChangeCalculation(itemObject);
 
   return `<li>

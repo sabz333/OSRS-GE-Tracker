@@ -2,7 +2,8 @@ import Router from "express-promise-router";
 import getTop5Tickers from "../functions/getTop5Tickers.js";
 import createHeaderCard from "../functions/createHeaderCard.js";
 import getUserTickers from "../functions/getUserTickers.js";
-import passport from "passport";
+import userTickerList from "../functions/userTickerList.js";
+import createDefaultListItem from "../functions/createDefaultListItem.js";
 
 const router = new Router();
 const mainStyleSheet = "styles/main.css";
@@ -16,16 +17,18 @@ router.get("/", async (req, res) => {
   });
   if (req.isAuthenticated()) {
     dashboardEnable = true;
-    const test = await getUserTickers(1);
-
-    console.log(test);
-    console.log(typeof(test.item_ids[2]));
+    const userTickers = await getUserTickers(req.user.id);
+    const userTickerTable = await userTickerList(userTickers.item_ids);
+    const renderedTickerTable = userTickerTable.map((item) => {
+      return createDefaultListItem(item);
+    })
 
     res.render("dashboard.ejs", {
       mainStyleSheet: mainStyleSheet,
       catId: categoryID,
       headerCardArray: renderedCards,
       dashboardBoolean: dashboardEnable,
+      userItemListArray: renderedTickerTable,
     });
   } else {
     res.redirect("/login");

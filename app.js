@@ -9,6 +9,7 @@ import { getLatestItemData } from "./Scripts/tickerUpdate.js";
 import { openingValuePull } from "./Scripts/tickerUpdateStartofDay.js";
 import pgS from "connect-pg-simple";
 import * as db from "./db/index.js";
+import queries from "./db/queries.js";
 import passport from "passport";
 import GoogleStrategy from "passport-google-oauth20";
 
@@ -48,20 +49,21 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, cb) => {
       try {
-        console.log(profile);
-        const result = await db.query("SELECT * FROM users WHERE email = $1", [
+        const result = await db.query(queries.findUser, [
           profile.emails[0].value,
         ]);
         if (result.rows.length === 0) {
-          const newUser = await db.query(
-            "INSERT INTO users (firstName, lastName, email, password) VALUES ($1, $2, $3, $4)",
-            [
-              profile.name.givenName,
-              profile.name.familyName,
-              profile.emails[0].value,
-              "google",
-            ]
-          );
+          const newUser = await db.query(queries.createNewUser, [
+            profile.name.givenName,
+            profile.name.familyName,
+            profile.emails[0].value,
+            "google",
+          ]);
+          const newUserTickers = await db.query(queries.createNewUserTickers, [
+            [13576, 436, 44],
+            [18770000, 436, 55765],
+            newUser.rows[0].id,
+          ]);
           return cb(null, newUser.rows[0]);
         }
         return cb(null, result.rows[0]);

@@ -1,8 +1,11 @@
 // calculate current ticker pricing based on opening values
 export default function dataChangeCalculation(itemObject) {
   // Data integrity check
-  if (!itemObject["high_vol"] && !itemObject["low_vol"]) {
+  if (!itemObject["high_vol"]) {
     itemObject["high_vol"] = 1;
+  }
+
+  if (!itemObject["low_vol"]) {
     itemObject["low_vol"] = 1;
   }
 

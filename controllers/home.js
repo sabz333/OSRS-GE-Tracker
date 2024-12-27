@@ -2,7 +2,7 @@ import Router from "express-promise-router";
 import getNewsArticles from "../functions/getNewsArticles.js"
 import getTop5Tickers from "../functions/getTop5Tickers.js";
 import createHeaderCard from "../functions/createHeaderCard.js";
-import createTopMoverListItem from "../functions/createTopMoverListItem.js";
+import createDefaultListItem from "../functions/createDefaultListItem.js";
 import topItemsList from "../functions/topItemsList.js";
 import { months } from "./util/constantVariables.js";
 
@@ -25,7 +25,7 @@ router.get("/", async (req, res) => {
 
   const listItems = await topItemsList();
   const renderedListItems = listItems.map((item) => {
-    return createTopMoverListItem(item);
+    return createDefaultListItem(item);
   })
 
   if (req.isAuthenticated()) {
