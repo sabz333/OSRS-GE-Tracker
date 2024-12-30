@@ -121,7 +121,7 @@ INSERT INTO ticker_users (item_ids, item_costs, user_id)
 VALUES ($1, $2, $3);`;
 
 const getUserTickers = `
-SELECT item_ids, item_costs
+SELECT item_ids, item_costs, item_qty
 FROM ticker_users
 WHERE user_id = $1`;
 

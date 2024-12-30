@@ -7,6 +7,13 @@ body {
   color: rgba(0, 0, 0, 0.87);
 }
 
+main {
+  padding: 24px 48px;
+  margin: auto;
+  margin-top: 40px;
+  position: relative;
+}
+
 .positive {
   color: rgb(19,115,51) !important;
 }
@@ -291,18 +298,20 @@ body {
 }
 /******************************* Top movers list formatting ************************/
 
-main {
-  padding: 24px 48px;
-  margin: auto;
-  margin-top: 40px;
-  position: relative;
-}
-
 .moversTable-title {
   line-height: 1.5rem;
   font-size: 1.125rem;
   letter-spacing: 0;
   font-weight: 400;
+  color: rgb(32, 33, 36);
+  margin-bottom: 8px;
+}
+
+.moversTable-subtitle {
+  line-height: 1.5rem;
+  font-size: 1.125rem;
+  letter-spacing: 0;
+  font-weight: 500;
   color: rgb(32, 33, 36);
   margin-bottom: 8px;
 }
@@ -318,6 +327,54 @@ main {
 .topMoversList > li:hover {
   background: #f8f9fa;
   cursor: pointer;
+}
+
+.watchedTitle {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  width: 100%;
+}
+
+.watchedTitleRow {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.watchedTable-title-sm {
+  /* width: 116px; */
+  line-height: 1.5rem;
+  font-size: 1.125rem;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: rgb(32, 33, 36);
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.watchedTable-title-lg {
+  /* width: 232px; */
+  line-height: 1.5rem;
+  font-size: 1.125rem;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: rgb(32, 33, 36);
+  margin-bottom: 8px;
+}
+
+.watchedTable-title-xl {
+  /* width: 325px; */
+  line-height: 1.5rem;
+  font-size: 1.125rem;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: rgb(32, 33, 36);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
 }
 
 .listItem {
@@ -354,14 +411,14 @@ main {
 }
 
 .listNameText {
-  width: 300px;
+  /* width: 300px; */
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
 
 .listItemContent {
-  width: 116px;
+  /* width: 116px; */
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -823,11 +880,10 @@ main {
   .listItem {
     min-height: 60px;
     height: unset;
-
   }
 
   .listImage {
-    width: 100%;
+    /* width: 100%; */
     flex-direction: column;
     align-items: flex-start;
   }
@@ -839,6 +895,7 @@ main {
   .listNameText {
     width: unset;
     overflow: unset;
+    white-space: unset;
   }
 
   .listItemContent {
@@ -856,10 +913,6 @@ main {
 
 @media screen and (max-width: 576px) {
   
-  .listNameText {
-    text-align: center;
-  }
-
   #headerItemCategorySelection{
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */

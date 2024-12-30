@@ -21,8 +21,10 @@ router.get("/", async (req, res) => {
     const userTickerTable = await userTickerList(userTickers.item_ids);
     const renderedTickerTable = userTickers.item_ids.map((item, idx) => {
       const itemObject = userTickerTable.find((ticker) => ticker.id === item);
-      return createDefaultListItem(itemObject, userTickers.item_costs[idx]);
+      return createDefaultListItem(itemObject, userTickers.item_costs[idx], userTickers.item_qty[idx]);
     })
+
+    console.log(userTickers);
 
     res.render("dashboard.ejs", {
       mainStyleSheet: mainStyleSheet,

@@ -1,15 +1,20 @@
 <%- include('partials/header.ejs'); -%>
 
 <main class="container-xl">
-  <div class="moversTable">
-    <section>
-      <div class="moversTable-title">Your Watched Items</div>
-      <ul class="topMoversList">
-        <% userItemListArray.forEach(listItem => { %>
-         <%- listItem %>
-        <% }) %>
-      </ul>
-    </section>
+  <div class="d-flex d-sm-none pb-3 watchedTable-title-xl">Your Watched Items</div>
+  <div class="moversTable container">
+    <div class="row align-items-end">
+      <div class="col-2 col-sm-6 col-xl-3 d-none d-sm-flex watchedTable-title-xl">Your Watched Items</div>
+      <div class="col-2 d-flex d-sm-none watchedTable-title-xl">Item</div>
+      <div class="col watchedTable-title-sm text-end d-none d-xl-flex">Price</div>
+      <div class="col watchedTable-title-sm text-end">Quantity</div>
+      <div class="col col-xl-2 watchedTable-title-lg text-center">Day Gain</div>
+      <div class="col watchedTable-title-sm text-end">Value</div>
+      <div class="col col-xl-3 watchedTable-title-lg text-center d-none d-xl-block">Value Change</div>
+    </div>
+      <% userItemListArray.forEach(listItem => { %>
+       <%- listItem %>
+      <% }) %>
   </div>
 </main>
 <%- include('partials/footer.ejs'); -%>

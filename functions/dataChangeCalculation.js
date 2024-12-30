@@ -1,5 +1,9 @@
 // calculate current ticker pricing based on opening values or initial price if passed
-export default function dataChangeCalculation(itemObject, initialPrice) {
+export default function dataChangeCalculation(
+  itemObject,
+  initialPrice,
+  initialQty
+) {
   // Data integrity check
   if (!itemObject["high_vol"]) {
     itemObject["high_vol"] = 1;
@@ -27,23 +31,24 @@ export default function dataChangeCalculation(itemObject, initialPrice) {
       itemObject["low_price"] * lowVolWeight
   );
 
-  let openingPrice = 0;
+  let percentTotalChange = 0;
 
   if (typeof initialPrice === "number") {
-    openingPrice = initialPrice;
-  } else {
-    const openHighVolWeight =
-      itemObject["open_high_vol"] /
-      (itemObject["open_high_vol"] + itemObject["open_low_vol"]);
-    const openLowVolWeight =
-      itemObject["open_low_vol"] /
-      (itemObject["open_high_vol"] + itemObject["open_low_vol"]);
-  
-    openingPrice = Math.round(
-      itemObject["open_high"] * openHighVolWeight +
-        itemObject["open_low"] * openLowVolWeight
-    );
+    percentTotalChange = ((currentPrice - initialPrice) / initialPrice) * 100;
   }
+
+  const openHighVolWeight =
+    itemObject["open_high_vol"] /
+    (itemObject["open_high_vol"] + itemObject["open_low_vol"]);
+  const openLowVolWeight =
+    itemObject["open_low_vol"] /
+    (itemObject["open_high_vol"] + itemObject["open_low_vol"]);
+
+  const openingPrice = Math.round(
+    itemObject["open_high"] * openHighVolWeight +
+      itemObject["open_low"] * openLowVolWeight
+  );
+
   const percentChange = ((currentPrice - openingPrice) / openingPrice) * 100;
   const priceChange = currentPrice - openingPrice;
   let arrow = "";
@@ -61,6 +66,31 @@ export default function dataChangeCalculation(itemObject, initialPrice) {
     change = "negative";
   }
 
+  // Determine total value and total value change
+  // Set value arrows and coloring
+  let totalInitialValue = 0;
+  let totalCurrentValue = 0;
+  let totalValueChange = 0;
+  let arrowValue = "";
+  let changeValue = "";
+
+  if (typeof initialQty === "number") {
+    totalInitialValue = initialPrice * initialQty;
+    totalCurrentValue = currentPrice * initialQty;
+    totalValueChange = totalCurrentValue - totalInitialValue;
+
+    if (totalValueChange > 0) {
+      arrowValue = "arrow_upward";
+      changeValue = "positive";
+    } else if (totalValueChange === 0) {
+      arrowValue = "trending_flat";
+      changeValue = "flat";
+    } else {
+      arrowValue = "arrow_downward";
+      changeValue = "negative";
+    }
+  }
+
   return {
     id: itemObject.id,
     currentPrice: currentPrice,
@@ -69,5 +99,11 @@ export default function dataChangeCalculation(itemObject, initialPrice) {
     arrow: arrow,
     change: change,
     openPrice: openingPrice,
+    percentTotalChange: percentTotalChange.toFixed(2),
+    totalInitialValue: totalInitialValue,
+    totalCurrentValue: totalCurrentValue,
+    totalValueChange: totalValueChange,
+    arrowValue: arrowValue,
+    changeValue: changeValue,
   };
 }
