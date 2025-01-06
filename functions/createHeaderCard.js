@@ -5,25 +5,19 @@ import formatShort from"./formatShort.js"
 export default function createHeaderCard(itemObject) {
   const values = dataChangeCalculation(itemObject);
 
-  return `<div class="topHeaderCardDiv">
-  <a class="headerCardLink" href="/item/${values.id}">
-  <div class="headerCard container d-flex flex-row align-items-center p-2">
-    <div
-      class="price-arrow ${
-        values.change
-      } d-flex justify-content-center align-items-center"
-    >
+  return `<a class="me-2" href="/item/${values.id}">
+  <div class="headerCard d-flex align-items-center p-2 me-2">
+    <div class="headerCardArrow ${values.change} d-flex justify-content-center align-items-center">
       <span class="material-symbols-rounded">${values.arrow}</span>
     </div>
-    <div class="itemPriceInfo d-flex flex-column">
-      <div class="itemId">${itemObject.name}</div>
-      <div class="itemPrice">${formatShort(values.currentPrice)}</div>
+    <div class="headerCardInfo s-font d-flex flex-column me-2">
+      <div class="headerCardName">${itemObject.name}</div>
+      <div class="headerCardPrice">${formatShort(values.currentPrice)}</div>
     </div>
-    <div class="itemPercentInfo ${values.change} d-flex flex-column flex-fill">
-      <div class="itemPercentChange">${values.percentChange}%</div>
-      <div class="itemValueChange">${formatShort(values.priceChange)}</div>
+    <div class="headerCardChange s-font ${values.change} d-flex flex-column">
+      <div class="headerCardPercent">${values.percentChange}%</div>
+      <div class="headerCardValueChange">${formatShort(values.priceChange)}</div>
     </div>
     </div>
-    </a>
-  </div>`;
+    </a>`;
 }

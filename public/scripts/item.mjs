@@ -44,7 +44,7 @@ async function loadChart(chartTimescale, dataTimescale, id) {
     }
 
     // change arrow
-    percentChangeDOM.children[0].children[0].innerHTML = "arrow_downward";
+    percentChangeDOM.children[0].innerHTML = "arrow_downward";
 
   } else if (priceChangeNumeric > 0) {
     if(!percentChangeDOM.classList.contains("positive")) {
@@ -61,7 +61,7 @@ async function loadChart(chartTimescale, dataTimescale, id) {
     }
 
     // change arrow
-    percentChangeDOM.children[0].children[0].innerHTML = "arrow_upward";
+    percentChangeDOM.children[0].innerHTML = "arrow_upward";
   } else {
     if(percentChangeDOM.classList.contains("negative")) {
       percentChangeDOM.classList.remove("negative");
@@ -71,10 +71,10 @@ async function loadChart(chartTimescale, dataTimescale, id) {
     }
 
     // change arrow
-    percentChangeDOM.children[0].children[0].innerHTML = "trending_flat";
+    percentChangeDOM.children[0].innerHTML = "trending_flat";
   }
   // change percent
-  percentChangeDOM.children[0].children[1].innerHTML = percentChange.toFixed(2) + " %";
+  percentChangeDOM.children[1].innerHTML = percentChange.toFixed(2) + " %";
   
   // change price
   if (chartTimescale === "1D") {

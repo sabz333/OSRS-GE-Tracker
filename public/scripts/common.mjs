@@ -1,12 +1,29 @@
 // Initialize variables
 const headerItemSelection = document.getElementById(
-  "headerItemCategorySelection"
+  "headerCategorySelection"
 );
 const searchBar = document.getElementById("searchBarInput");
 const searchBarStyleDiv = searchBar.parentElement.parentElement;
 const searchBox = document.getElementById("searchBox");
 const searchResults = document.getElementById("searchResults");
 var searchTimer;
+const watchTable = document.getElementById("watchTable");
+const itemAdd = document.getElementById("item-add");
+const itemAdd_main = document.getElementById("item-add-main");
+const itemAdd_qty = document.getElementById("item-add-qty");
+const itemAdd_btn = document.getElementById("item-add-dropdown-btn");
+const itemAdd_btnOptions = document.getElementById("item-add-dropdown-btn-list");
+const itemAdd_info = document.getElementById("item-add-info");
+const itemAdd_price = document.getElementById("item-add-price");
+
+const main = document.querySelector("main");
+let within_itemAdd = false;
+
+// main.addEventListener("click", (event) => {
+//   if (!within_itemAdd && itemAdd.style.display === "block") {
+//     itemAdd.style.display = 'none';
+//   }
+// })
 
 // on first load functions
 loadHeaderCards(10);
@@ -60,10 +77,11 @@ searchBar.addEventListener("focusout", (event) => {
       searchBarStyleDiv.classList.remove("searching");
     }
     searchBox.style.display = "none";
+    // itemAdd.style.display = 'none';
   }
 });
 
-// reopen searchbox results if search bar has text
+// reopen searchbox results if search bar has text, also closes item add box
 searchBar.addEventListener("focusin", (event) => {
   if (searchBar.value !== "") {
     searchBox.style.display = "block";
@@ -74,7 +92,66 @@ searchBar.addEventListener("focusin", (event) => {
   ) {
     searchBarStyleDiv.classList.add("searching");
   }
+  // itemAdd.style.display = 'none';
 });
+
+// trigger add item block
+searchResults.addEventListener("click", (event) => {
+  const button = event.target.closest('button');
+
+  if(button.getAttribute("data-id") && button.getAttribute("data-value")) {
+    const itemData = button.dataset;
+    const imgHTML = `<img src="https://services.runescape.com/m=itemdb_oldschool/obj_sprite.gif?id=${itemData.id}"></img>`;
+    updateItemAdd(imgHTML,itemData.name, itemData.price, itemData.pricechange, itemData.percent, itemData.arrow, itemData.class)
+    itemAdd.style.display = 'block';
+    itemAdd_qty.focus();
+    if (!event.relatedTarget) {
+      if (searchBarStyleDiv.classList.contains("searching")) {
+        searchBarStyleDiv.classList.remove("searching");
+      }
+      searchBox.style.display = "none";
+    }
+    // updateWatchTable(button.getAttribute("data-id"), button.getAttribute("data-value")).then((response) => {
+    //   if (response.status === 200 && watchTable) {
+    //     console.log("refreshing watch table");
+    //     refreshWatchTable().then((response) => {
+    //       watchTable.innerHTML = "";
+    //       response.forEach((item) => watchTable.innerHTML += item);
+    //     });
+    //   }
+    // });
+  }
+})
+
+// // change price unit on item add box
+// itemAdd_btnOptions.addEventListener("click", (event) => {
+//   const unit = event.target.closest('a');
+//   const currUnit = itemAdd_btn.innerText;
+  
+//   itemAdd_btn.innerText = unit.innerHTML;
+//   unit.innerHTML = currUnit;
+// })
+
+// hide search results and/or item add box when clicking off
+searchResults.addEventListener("focusout", (event) => {
+  // check if clicking on search result
+  if (!event.relatedTarget) {
+    if (searchBarStyleDiv.classList.contains("searching")) {
+      searchBarStyleDiv.classList.remove("searching");
+    }
+    searchBox.style.display = "none";
+    // itemAdd.style.display="none";
+  }
+});
+
+// // track mouse location relative to item add box
+// itemAdd_main.addEventListener("pointerleave", (event) => {
+//   within_itemAdd = false;
+// })
+
+// itemAdd_main.addEventListener("pointerenter", (event) => {
+//   within_itemAdd = true;
+// })
 
 // function to load set of header cards when id is selected
 async function loadHeaderCards(id) {
@@ -116,4 +193,76 @@ async function searchItem(string) {
     console.log(error);
     return [];
   }
+}
+
+// function to push item data to user watch table
+async function updateWatchTable(itemID, itemValue) {
+  try {
+    const response = await axios.post('/watchTable/push', {item: itemID, value: itemValue});
+    return response;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
+
+// function to pull saved user items and update table from server
+async function refreshWatchTable() {
+  try {
+    const response = await axios.get('/watchTable/pull');
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
+
+async function removeWatchTableItem(itemID) {
+  try {
+    const response = await axios.post('/watchTable/remove', {item: itemID});
+    return response;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
+
+// function to load selected item information to item-add box
+function updateItemAdd(imgHTML, itemName, itemPrice, itemChange, itemPercent, itemArrow, itemClass) {
+  const childrenNodes = itemAdd_info.children;
+
+  // update image
+  childrenNodes[0].children[0].outerHTML = imgHTML;
+
+  // update name
+  childrenNodes[0].children[1].children[0].innerText = itemName;
+
+  // update price
+  childrenNodes[1].children[0].firstElementChild.innerText = itemPrice;
+
+  // update price change
+  childrenNodes[2].children[0].children[0].children[0].innerText = itemChange;
+
+  // update percent change
+  childrenNodes[2].children[1].children[0].children[0].children[1].innerText = itemPercent;
+  
+  // update arrow
+  childrenNodes[2].children[1].children[0].children[0].children[0].innerText = itemArrow;
+
+  // update class colors
+  const percentClass = childrenNodes[2].children[1].children[0].className.split(" ");
+  percentClass.pop();
+  percentClass.push(itemClass);
+  childrenNodes[2].children[1].children[0].className = percentClass.join(" ");
+
+  childrenNodes[2].children[0].children[0].children[0].className = itemClass;
+
+  // set default input value to current price
+  itemAdd_price.value = Number.parseFloat(itemPrice.match("[0-9\.]+"));
+  const currUnit = itemAdd_btn.innerText;
+  itemAdd_btn.innerText = itemPrice.match("[A-Za-z]+");
+  const listOptions = Array.from(itemAdd_btnOptions.children);
+  const listOption = listOptions.find((child) => child.innerText === itemPrice.match(/[a-zA-Z]/g)[0]);
+  // listOption.innerText = currUnit;
+  listOption.children[0].innerText = currUnit;
 }
