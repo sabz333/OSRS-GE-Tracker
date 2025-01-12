@@ -70,21 +70,73 @@
             <% }) %>
           </div>
         </div>
-        <div class="search">
-          <span class="material-symbols-rounded"> search </span>
-          <div class="searchBar">
-            <div class="searchInput d-flex">
-              <input
-                type="text"
-                autocomplete="off"
-                placeholder="Search for items"
-                id="searchBarInput"
-              />
-            </div>
+      </div>
+      <div class="search">
+        <span class="material-symbols-rounded"> search </span>
+        <div class="searchBar">
+          <div class="searchInput d-flex">
+            <input
+              type="text"
+              autocomplete="off"
+              placeholder="Search for items"
+              id="searchBarInput"
+            />
           </div>
-          <div id="searchBox">
-            <div id="searchResults">
+        </div>
+        <div id="searchBox">
+          <div id="searchResults">
+          </div>
+        </div>
+      </div>
+      <div id="item-add">
+        <div class="item-add-mainbox" id="item-add-main">
+          <div class="container mt-3" style="width: 90%;">
+            <div class="row item-add-title">
+              <div class="col-5 ps-5">Item</div>
+              <div class="col-3">Current Price</div>
+              <div class="col text-center">Day Change</div>
             </div>
+            <div class="row" data-id="" id="item-add-info">
+              <div class="col-5 d-flex flex-column flex-sm-row align-items-start align-items-sm-center" id="item-add-item-image">
+                <img src="https://services.runescape.com/m=itemdb_oldschool/obj_sprite.gif?id=1357" alt="item image">
+                <div class="m-font fw-medium py-sm-2 ps-sm-3">TEST ITEM</div>
+              </div>
+              <div class="col-3 d-flex justify-content-center align-items-center">
+                <div class="fw-medium" id="item-add-item-price">$10.1K</div>
+              </div>
+              <div class="col-4 d-none d-md-flex justify-content-center align-items-center">
+                  <span class="fw-medium pe-2 positive" id="item-add-item-change">2.1K</span>
+                  <div class="percentChangePill d-flex justify-content-end align-items-center positive" id="item-add-item-changePercent">
+                    <span class="material-symbols-rounded percentChangeArrow">arrow_upward</span>
+                    <span class="fw-medium">10.1%</span>
+                  </div>
+              </div>
+            </div>
+            <form class="row mt-4" action="/watchTable/add">
+              <div class="col input-group">
+                <span class="input-group-text">Quantity</span>
+                <input type="number" class="form-control" id="item-add-qty" value="1" min="1">
+              </div>
+              <div class="col">
+                <div class="input-group">
+                  <span class="input-group-text">Price</span>
+                  <input type="number" class="form-control" id="item-add-price" value="1" min="1">
+                  <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="item-add-dropdown-unit">gp</button>
+                  <ol class="dropdown-menu dropdown-menu-end" id="item-add-dropdown-unit-list">
+                    <li><a class="dropdown-item">gp</a></li>
+                    <li><a class="dropdown-item">K</a></li>
+                    <li><a class="dropdown-item">M</a></li>
+                    <li><a class="dropdown-item">B</a></li>
+                  </ol>
+                </div>
+              </div>
+              <div class="col-12 my-3 d-flex justify-content-center">
+                <div>
+                  <input type="button" value="Add to Watch List" id="item-add-submit"></input>
+                </div>
+              </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>

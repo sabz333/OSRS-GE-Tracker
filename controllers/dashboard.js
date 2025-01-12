@@ -2,7 +2,6 @@ import Router from "express-promise-router";
 import getTop5Tickers from "../functions/getTop5Tickers.js";
 import createHeaderCard from "../functions/createHeaderCard.js";
 import getUserTickers from "../functions/getUserTickers.js";
-import userTickerList from "../functions/userTickerList.js";
 import createDefaultListItem from "../functions/createDefaultListItem.js";
 
 const router = new Router();
@@ -18,13 +17,9 @@ router.get("/", async (req, res) => {
   if (req.isAuthenticated()) {
     dashboardEnable = true;
     const userTickers = await getUserTickers(req.user.id);
-    const userTickerTable = await userTickerList(userTickers.item_ids);
-    const renderedTickerTable = userTickers.item_ids.map((item, idx) => {
-      const itemObject = userTickerTable.find((ticker) => ticker.id === item);
-      return createDefaultListItem(itemObject, userTickers.item_costs[idx], userTickers.item_qty[idx]);
+    const renderedTickerTable = userTickers.map((ticker) => {
+      return createDefaultListItem(ticker, ticker.item_value, ticker.item_qty);
     })
-
-    console.log(userTickers);
 
     res.render("dashboard.ejs", {
       mainStyleSheet: mainStyleSheet,

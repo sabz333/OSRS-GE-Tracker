@@ -31,6 +31,7 @@ app.use(
   })
 );
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use("/", express.static("public"));
 app.use("/item", express.static("public"));
 app.use(passport.initialize());
@@ -59,9 +60,10 @@ passport.use(
             profile.emails[0].value,
             "google",
           ]);
-          const newUserTickers = await db.query(queries.createNewUserTickers, [
-            [13576, 436, 44],
-            [18770000, 436, 55765],
+          const newUserTicker = await db.query(queries.createNewUserTickers, [
+            13576,
+            18770000,
+            1,
             newUser.rows[0].id,
           ]);
           return cb(null, newUser.rows[0]);

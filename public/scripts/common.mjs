@@ -11,19 +11,20 @@ const watchTable = document.getElementById("watchTable");
 const itemAdd = document.getElementById("item-add");
 const itemAdd_main = document.getElementById("item-add-main");
 const itemAdd_qty = document.getElementById("item-add-qty");
-const itemAdd_btn = document.getElementById("item-add-dropdown-btn");
-const itemAdd_btnOptions = document.getElementById("item-add-dropdown-btn-list");
+const itemAdd_unit = document.getElementById("item-add-dropdown-unit");
+const itemAdd_unitOptions = document.getElementById("item-add-dropdown-unit-list");
 const itemAdd_info = document.getElementById("item-add-info");
 const itemAdd_price = document.getElementById("item-add-price");
+const itemAdd_submit = document.getElementById("item-add-submit");
 
 const main = document.querySelector("main");
 let within_itemAdd = false;
 
-// main.addEventListener("click", (event) => {
-//   if (!within_itemAdd && itemAdd.style.display === "block") {
-//     itemAdd.style.display = 'none';
-//   }
-// })
+main.addEventListener("click", (event) => {
+  if (!within_itemAdd && itemAdd.style.display === "block") {
+    itemAdd.style.display = 'none';
+  }
+})
 
 // on first load functions
 loadHeaderCards(10);
@@ -77,7 +78,7 @@ searchBar.addEventListener("focusout", (event) => {
       searchBarStyleDiv.classList.remove("searching");
     }
     searchBox.style.display = "none";
-    // itemAdd.style.display = 'none';
+    itemAdd.style.display = 'none';
   }
 });
 
@@ -92,7 +93,7 @@ searchBar.addEventListener("focusin", (event) => {
   ) {
     searchBarStyleDiv.classList.add("searching");
   }
-  // itemAdd.style.display = 'none';
+  itemAdd.style.display = 'none';
 });
 
 // trigger add item block
@@ -102,7 +103,7 @@ searchResults.addEventListener("click", (event) => {
   if(button.getAttribute("data-id") && button.getAttribute("data-value")) {
     const itemData = button.dataset;
     const imgHTML = `<img src="https://services.runescape.com/m=itemdb_oldschool/obj_sprite.gif?id=${itemData.id}"></img>`;
-    updateItemAdd(imgHTML,itemData.name, itemData.price, itemData.pricechange, itemData.percent, itemData.arrow, itemData.class)
+    updateItemAdd(itemData.id, imgHTML, itemData.name, itemData.price, itemData.pricechange, itemData.percent, itemData.arrow, itemData.class)
     itemAdd.style.display = 'block';
     itemAdd_qty.focus();
     if (!event.relatedTarget) {
@@ -111,26 +112,16 @@ searchResults.addEventListener("click", (event) => {
       }
       searchBox.style.display = "none";
     }
-    // updateWatchTable(button.getAttribute("data-id"), button.getAttribute("data-value")).then((response) => {
-    //   if (response.status === 200 && watchTable) {
-    //     console.log("refreshing watch table");
-    //     refreshWatchTable().then((response) => {
-    //       watchTable.innerHTML = "";
-    //       response.forEach((item) => watchTable.innerHTML += item);
-    //     });
-    //   }
-    // });
   }
 })
 
-// // change price unit on item add box
-// itemAdd_btnOptions.addEventListener("click", (event) => {
-//   const unit = event.target.closest('a');
-//   const currUnit = itemAdd_btn.innerText;
+// change price unit on item add box
+itemAdd_unitOptions.addEventListener("click", (event) => {
+  const unit = event.target.closest('a');
+  const currUnit = itemAdd_unit.innerText;
   
-//   itemAdd_btn.innerText = unit.innerHTML;
-//   unit.innerHTML = currUnit;
-// })
+  itemAdd_unit.innerText = unit.innerHTML;
+})
 
 // hide search results and/or item add box when clicking off
 searchResults.addEventListener("focusout", (event) => {
@@ -140,18 +131,57 @@ searchResults.addEventListener("focusout", (event) => {
       searchBarStyleDiv.classList.remove("searching");
     }
     searchBox.style.display = "none";
-    // itemAdd.style.display="none";
+    itemAdd.style.display="none";
   }
 });
 
-// // track mouse location relative to item add box
-// itemAdd_main.addEventListener("pointerleave", (event) => {
-//   within_itemAdd = false;
-// })
+// track mouse location relative to item add box
+itemAdd_main.addEventListener("pointerleave", (event) => {
+  within_itemAdd = false;
+})
 
-// itemAdd_main.addEventListener("pointerenter", (event) => {
-//   within_itemAdd = true;
-// })
+itemAdd_main.addEventListener("pointerenter", (event) => {
+  within_itemAdd = true;
+})
+
+// add event listen to submit button on item add form to push user data
+itemAdd_submit.addEventListener("click", (event) => {
+  event.preventDefault();
+
+  const itemID = itemAdd_info.getAttribute("data-id");
+  let itemValue = Number.parseFloat(itemAdd_price.value);
+  const itemQty = itemAdd_qty.value;
+
+  // convert quantity based on user input value
+  switch (itemAdd_unit.innerText) {
+    case "gp":
+      itemValue *= 1;
+      break;
+    case "K":
+      itemValue *= 1000;
+      break;
+    case "M":
+      itemValue *= 1000000;
+      break;
+    case "B":
+      itemValue *= 1000000000;
+      break;
+  
+    default:
+      break;
+  }
+
+  updateWatchTable(itemID, itemValue, itemQty).then((response) => {
+    if (response.status === 200 && watchTable) {
+      console.log("refreshing watch table");
+      refreshWatchTable().then((response) => {
+        watchTable.innerHTML = "";
+        response.forEach((item) => watchTable.innerHTML += item);
+      });
+    }
+    itemAdd.style.display = "none";
+  });
+})
 
 // function to load set of header cards when id is selected
 async function loadHeaderCards(id) {
@@ -196,9 +226,9 @@ async function searchItem(string) {
 }
 
 // function to push item data to user watch table
-async function updateWatchTable(itemID, itemValue) {
+async function updateWatchTable(itemID, itemValue, itemQty) {
   try {
-    const response = await axios.post('/watchTable/push', {item: itemID, value: itemValue});
+    const response = await axios.post('/watchTable/push', {item: itemID, value: itemValue, quantity: itemQty});
     return response;
   } catch (error) {
     console.log(error);
@@ -217,52 +247,46 @@ async function refreshWatchTable() {
   }
 }
 
-async function removeWatchTableItem(itemID) {
-  try {
-    const response = await axios.post('/watchTable/remove', {item: itemID});
-    return response;
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
-}
-
 // function to load selected item information to item-add box
-function updateItemAdd(imgHTML, itemName, itemPrice, itemChange, itemPercent, itemArrow, itemClass) {
+function updateItemAdd(itemID, imgHTML, itemName, itemPrice, itemChange, itemPercent, itemArrow, itemClass) {
   const childrenNodes = itemAdd_info.children;
 
   // update image
   childrenNodes[0].children[0].outerHTML = imgHTML;
 
   // update name
-  childrenNodes[0].children[1].children[0].innerText = itemName;
+  childrenNodes[0].children[1].innerText = itemName;
 
   // update price
-  childrenNodes[1].children[0].firstElementChild.innerText = itemPrice;
+  childrenNodes[1].children[0].innerText = itemPrice;
 
   // update price change
-  childrenNodes[2].children[0].children[0].children[0].innerText = itemChange;
+  childrenNodes[2].children[0].innerText = itemChange;
 
   // update percent change
-  childrenNodes[2].children[1].children[0].children[0].children[1].innerText = itemPercent;
+  childrenNodes[2].children[1].children[1].innerText = itemPercent;
   
   // update arrow
-  childrenNodes[2].children[1].children[0].children[0].children[0].innerText = itemArrow;
+  childrenNodes[2].children[1].children[0].innerText = itemArrow;
 
   // update class colors
-  const percentClass = childrenNodes[2].children[1].children[0].className.split(" ");
+  let percentClass = childrenNodes[2].children[0].className.split(" ");
   percentClass.pop();
   percentClass.push(itemClass);
-  childrenNodes[2].children[1].children[0].className = percentClass.join(" ");
+  childrenNodes[2].children[0].className = percentClass.join(" ");
 
-  childrenNodes[2].children[0].children[0].children[0].className = itemClass;
+  percentClass = childrenNodes[2].children[1].className.split(" ");
+  percentClass.pop();
+  percentClass.push(itemClass);
+  childrenNodes[2].children[1].className = percentClass.join(" ");
 
   // set default input value to current price
+  const currUnit = itemAdd_unit.innerText;
+  const listOptions = Array.from(itemAdd_unitOptions.children);
+
   itemAdd_price.value = Number.parseFloat(itemPrice.match("[0-9\.]+"));
-  const currUnit = itemAdd_btn.innerText;
-  itemAdd_btn.innerText = itemPrice.match("[A-Za-z]+");
-  const listOptions = Array.from(itemAdd_btnOptions.children);
-  const listOption = listOptions.find((child) => child.innerText === itemPrice.match(/[a-zA-Z]/g)[0]);
-  // listOption.innerText = currUnit;
-  listOption.children[0].innerText = currUnit;
+  itemAdd_unit.innerText = itemPrice.match("[A-Za-z]+");
+
+  // pass item ID to item add
+  itemAdd_info.setAttribute("data-id", itemID);
 }

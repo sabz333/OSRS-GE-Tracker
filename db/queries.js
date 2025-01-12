@@ -1,5 +1,5 @@
 const getTopTickers = `
-SELECT ticker_summary.id,
+SELECT ticker_summary.id as ticker_id,
   open_high,
   open_low,
   high_price,
@@ -85,19 +85,38 @@ WHERE ticker_summary.id = x."id"
   AND x."lowPriceVolume" IS NOT NULL;`;
 
 const getItemDetails = `
-SELECT * FROM items
+SELECT ticker_summary.id as ticker_id,
+  icon,
+  icon_large,
+  name,
+  description,
+  category,
+  members,
+  trade_limit,
+  low_alch,
+  high_alch,
+  open_high,
+  open_low,
+  high_price,
+  low_price,
+  high_vol,
+  low_vol,
+  open_high_vol,
+  open_low_vol,
+  last_update
+FROM items
 JOIN ticker_summary ON items.id = ticker_summary.id
 WHERE items.id = $1;`;
 
 const itemSearchQuery = `
-SELECT items.id, items.name, open_high, open_low, high_vol, low_vol, high_price, low_price, open_high_vol, open_low_vol
+SELECT items.id as ticker_id, items.name, open_high, open_low, high_vol, low_vol, high_price, low_price, open_high_vol, open_low_vol
 FROM items
 JOIN ticker_summary ON items.id = ticker_summary.id
 WHERE items.name ILIKE '%' || $1 || '%'
 ORDER BY name ASC;`;
 
 const getTopItems = `
-SELECT ticker_summary.id, open_high, open_low, high_price, low_price, high_vol, low_vol, name, open_high_vol, open_low_vol
+SELECT ticker_summary.id as ticker_id, open_high, open_low, high_price, low_price, high_vol, low_vol, name, open_high_vol, open_low_vol
 FROM ticker_summary
 JOIN items ON items.id = ticker_summary.id
 WHERE high_vol IS NOT NULL
@@ -117,19 +136,23 @@ VALUES ($1, $2, $3, $4)
 RETURNING id;`;
 
 const createNewUserTickers = `
-INSERT INTO ticker_users (item_ids, item_costs, user_id)
-VALUES ($1, $2, $3);`;
+INSERT INTO ticker_users (item_id, item_value, item_qty, user_id)
+VALUES ($1, $2, $3, $4);`;
 
 const getUserTickers = `
-SELECT item_ids, item_costs, item_qty
-FROM ticker_users
-WHERE user_id = $1`;
-
-const getUserTickerTable = `
-SELECT ticker_summary.id, open_high, open_low, high_price, low_price, high_vol, low_vol, name, open_high_vol, open_low_vol
+SELECT ticker_summary.id as ticker_id, open_high, open_low, high_price, low_price, high_vol, low_vol, name, open_high_vol, open_low_vol, ticker_users.id as watch_id, item_value, item_qty
 FROM ticker_summary
 JOIN items ON items.id = ticker_summary.id
-WHERE ticker_summary.id = ANY($1::INT[]);`
+JOIN ticker_users ON ticker_users.item_id = ticker_summary.id
+WHERE ticker_users.user_id = $1;`
+
+const pushUserTicker = `
+INSERT INTO ticker_users (user_id, item_id, item_value, item_qty)
+VALUES ($3, $1, $2, $4)`;
+
+const deleteUserTicker = `
+DELETE FROM ticker_users
+WHERE id = $1 AND user_id = $2`;
 
 
 export default {
@@ -147,5 +170,6 @@ export default {
   createNewUser,
   createNewUserTickers,
   getUserTickers,
-  getUserTickerTable,
+  pushUserTicker,
+  deleteUserTicker,
 };

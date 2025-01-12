@@ -6,6 +6,7 @@ import graph from '../controllers/graph.js';
 import login from '../controllers/login.js';
 import auth from '../controllers/auth.js';
 import dashboard from '../controllers/dashboard.js';
+import watchTable from '../controllers/watchTable.js';
 
 const mountRoutes = (app) => {
   app.use('/', home);
@@ -16,6 +17,7 @@ const mountRoutes = (app) => {
   app.use('/login', login);
   app.use('/auth', auth);
   app.use('/dashboard', dashboard);
+  app.use('/watchTable', watchTable);
 }
 
 export default mountRoutes;

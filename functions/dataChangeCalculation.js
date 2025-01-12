@@ -92,7 +92,7 @@ export default function dataChangeCalculation(
   }
 
   return {
-    id: itemObject.id,
+    id: itemObject.ticker_id,
     currentPrice: currentPrice,
     percentChange: percentChange.toFixed(2),
     priceChange: priceChange,
