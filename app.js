@@ -87,8 +87,8 @@ passport.deserializeUser((user, cb) => {
 // update day values on first startup
 openingValuePull();
 
-// cron schedule to automatically update item values every 5 min
-cron.schedule("1-56/5 * * * *", () => getLatestItemData(), {
+// cron schedule to automatically update item values at every 5th minute from 2 through 57
+cron.schedule("2-57/5 * * * *", () => getLatestItemData(), {
   scheduled: true,
 });
 
