@@ -146,9 +146,24 @@ JOIN items ON items.id = ticker_summary.id
 JOIN ticker_users ON ticker_users.item_id = ticker_summary.id
 WHERE ticker_users.user_id = $1;`
 
+const getSingleTicker = `
+SELECT ticker_summary.id as ticker_id, open_high, open_low, high_price, low_price, high_vol, low_vol, name, open_high_vol, open_low_vol, ticker_users.id as watch_id, item_value, item_qty
+FROM ticker_summary
+JOIN items ON items.id = ticker_summary.id
+JOIN ticker_users ON ticker_users.item_id = ticker_summary.id
+WHERE ticker_users.user_id = $1 AND ticker_users.id = $2;`;
+
 const pushUserTicker = `
 INSERT INTO ticker_users (user_id, item_id, item_value, item_qty)
 VALUES ($3, $1, $2, $4)`;
+
+const updateUserTicker = `
+UPDATE ticker_users
+SET
+  item_value = $1,
+  item_qty = $2
+WHERE
+  ticker_users.id = $3 AND user_id = $4;`;
 
 const deleteUserTicker = `
 DELETE FROM ticker_users
@@ -170,6 +185,8 @@ export default {
   createNewUser,
   createNewUserTickers,
   getUserTickers,
+  getSingleTicker,
   pushUserTicker,
+  updateUserTicker,
   deleteUserTicker,
 };

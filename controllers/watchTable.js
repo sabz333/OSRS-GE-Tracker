@@ -1,6 +1,8 @@
 import Router from "express-promise-router";
 import getUserTickers from "../functions/getUserTickers.js";
 import setUserTicker from "../functions/setUserTicker.js";
+import getSingleUserTicker from "../functions/getSingleUserTicker.js";
+import updateUserTickers from "../functions/updateUserTicker.js";
 import deleteUserTickers from "../functions/deleteUserTicker.js";
 import createDefaultListItem from "../functions/createDefaultListItem.js";
 
@@ -34,11 +36,29 @@ router.get("/pull", async (req, res) => {
 
 router.post("/push", async (req, res) => {
   if (req.isAuthenticated) {
-    console.log(req.body);
     try {
       const tickerResponse = await setUserTicker(req.body.item, req.body.value, req.user.id, req.body.quantity);
-      console.log(tickerResponse);
       res.sendStatus(200);
+    } catch (error) {
+      console.log(error);
+      res.sendStatus(501);
+    }
+  } else {
+    res.sendStatus(401);
+  }
+})
+
+router.put("/edit/:ticker", async (req, res) => {
+  if (req.isAuthenticated) {
+    const ticker = req.params.ticker;
+    const value = req.body.data.value;
+    const quantity = req.body.data.quantity;
+    const userID = req.user.id;
+    try {
+      const tickerResponse = await updateUserTickers(ticker, value, quantity, userID);
+      const tickerInfo = await getSingleUserTicker(ticker, userID);
+      const renderedTickerLine = createDefaultListItem(tickerInfo, parseInt(value), parseInt(quantity));
+      res.send(JSON.stringify({renderedLine: renderedTickerLine}));
     } catch (error) {
       console.log(error);
       res.sendStatus(501);
@@ -50,7 +70,6 @@ router.post("/push", async (req, res) => {
 
 router.delete("/remove/:ticker", async (req, res) => {
   if (req.isAuthenticated) {
-    console.log(req.params);
     const response = await deleteUserTickers(req.params.ticker, req.user.id);
     res.sendStatus(200);
   } else {

@@ -26,17 +26,49 @@ watchTable.addEventListener("click", (event) => {
     deleteParent.classList.add("deleteTransition");
     removeWatchTableItem(deleteTicker);
   }
-  // edit item quantity and value in watch table
+  // show edit item quantity and value window when edit is selected in table
   if (event.target.classList.contains('edit') && event.target.nodeName === "SPAN") {
     event.preventDefault();
     const editParent = parent(event.target, 2);
     const editTicker = editParent.id;
     const itemData = event.target.dataset;
     const imgHTML = `<img src="https://services.runescape.com/m=itemdb_oldschool/obj_sprite.gif?id=${itemData.id}"></img>`
-    updateItemEdit(itemData.id, imgHTML, itemData.name, itemData.value, itemData.quantity);
+    updateItemEdit(itemData.id, imgHTML, itemData.name, itemData.value, itemData.quantity, editTicker);
     editView.style.display = "block";
   } 
 });
+
+// update item info button handler
+itemEdit_submit.addEventListener("click", (event) => {
+  event.preventDefault();
+  const ticker = itemEdit_info.getAttribute("data-ticker");
+  let newPrice = itemEdit_price.value;
+
+  // convert quantity based on user input value
+  switch (itemEdit_unit.innerText) {
+    case "gp":
+      newPrice *= 1;
+      break;
+    case "K":
+      newPrice *= 1000;
+      break;
+    case "M":
+      newPrice *= 1000000;
+      break;
+    case "B":
+      newPrice *= 1000000000;
+      break;
+  
+    default:
+      break;
+  }
+  updateWatchTableItem(ticker, itemEdit_qty.value, newPrice).then((response) => {
+    const updatedItemLine = response.data.renderedLine;
+    editView.style.display = "none";
+    const currentItemLine = parent(document.getElementById(ticker), 2);
+    currentItemLine.outerHTML = updatedItemLine;
+  });
+})
 
 // track mouse location relative to item edit box
 itemEdit_main.addEventListener("pointerleave", (event) => {
@@ -59,7 +91,7 @@ async function removeWatchTableItem(itemTickerNumber) {
 
 async function updateWatchTableItem(itemTickerNumber, newQuantity, newValue) {
   try {
-    const response = await axios.get('/watchTable/edit/' + itemTickerNumber, {data: {quantity: newQuantity, value: newValue}});
+    const response = await axios.put('/watchTable/edit/' + itemTickerNumber, {data: {quantity: newQuantity, value: newValue}});
     return response;
   } catch (error) {
     console.log(error);
@@ -77,7 +109,7 @@ function parent (element, n = 1) {
 }
 
 // function to pass existing item info to item edit window
-function updateItemEdit(itemID, imgHTML, itemName, itemPrice, itemQuantity) {
+function updateItemEdit(itemID, imgHTML, itemName, itemPrice, itemQuantity, itemTickerNumber="") {
   const childrenNodes = itemEdit_info.children;
 
   // update image
@@ -101,4 +133,6 @@ function updateItemEdit(itemID, imgHTML, itemName, itemPrice, itemQuantity) {
 
   // pass item ID to item add
   itemEdit_info.setAttribute("data-id", itemID);
+  // pass ticker ID to item
+  itemEdit_info.setAttribute("data-ticker", itemTickerNumber);
 }
