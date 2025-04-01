@@ -7,9 +7,16 @@ const itemEdit_qty = document.getElementById("item-edit-qty");
 const itemEdit_price = document.getElementById("item-edit-price");
 const itemEdit_unit = document.getElementById("item-edit-dropdown-unit");
 const itemEdit_submit = document.getElementById("item-edit-submit");
+const userManagement = document.getElementById("user");
 
 let within_itemEdit = true;
 
+//update user icon to logout on dashboard page only
+userManagement.setAttribute("href", "/auth/logout");
+userManagement.children[0].innerText = "logout";
+userManagement.children[1].innerText = "Logout";
+
+// global event listener to autohide when focus out of item add
 document.body.addEventListener("click", (event) => {
   if (!within_itemEdit && editView.style.display === "block") {
     editView.style.display = 'none';
