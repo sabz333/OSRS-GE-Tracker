@@ -664,4 +664,8 @@ img {
     height: 72px;
     max-height: unset;
   }
+
+  .sign-in-box {
+    width: unset;
+  }
 }
