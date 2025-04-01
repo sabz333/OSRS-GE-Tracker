@@ -20,6 +20,7 @@ const itemAdd_submit = document.getElementById("item-add-submit");
 const main = document.querySelector("main");
 let within_itemAdd = false;
 
+// item add global event lister to hide box on focus out
 main.addEventListener("click", (event) => {
   if (!within_itemAdd && itemAdd.style.display === "block") {
     itemAdd.style.display = 'none';
