@@ -11,7 +11,7 @@ import formatShort from "../functions/formatShort.js";
 const router = new Router();
 const categoryID = 10;
 const mainStyleSheet = "styles/main.css";
-const options = {
+const dateOptions = {
   month: "short",
   day: "numeric",
   timeZone: "America/New_York",
@@ -23,17 +23,23 @@ const options = {
 
 router.get("/:id", async (req, res) => {
   const itemId = req.params.id;
-  let dashboardEnable = false;
-  const headerItems = await getTop5Tickers(categoryID);
-  const renderedCards = headerItems.map((item) => {
-    return createHeaderCard(item);
-  });
-  const itemDetails = await getItemDetails(req.params.id);
+  const dashboardEnable = req.isAuthenticated();
+  
+  // Fetch data in parallel
+  const [headerItems, itemDetails, rawYearData, rawDayData] = await Promise.all(
+    [
+      getTop5Tickers(categoryID),
+      getItemDetails(itemId),
+      pullGraphData(itemId, "24h", "1Y"),
+      pullGraphData(itemId, "5m", "1D"),
+    ]
+  );
+  
   const itemCalcs = dataChangeCalculation(itemDetails);
+  const yearData = graphDataExtract(rawYearData, "1Y");
+  const dayData = graphDataExtract(rawDayData, "1D");
 
   // year data min & max & average volume
-  const rawYearData = await pullGraphData(req.params.id, "24h", "1Y");
-  const yearData = graphDataExtract(rawYearData, "1Y");
   const yearMin = formatShort(Math.min(...yearData.price));
   const yearMax = formatShort(Math.max(...yearData.price));
   const yearAvgVol = Math.round(
@@ -41,8 +47,6 @@ router.get("/:id", async (req, res) => {
   );
 
   // day data min & max
-  const rawDayData = await pullGraphData(req.params.id, "5m", "1D");
-  const dayData = graphDataExtract(rawDayData, "1D");
   const dayMin = formatShort(Math.min(...dayData.price));
   const dayMax = formatShort(Math.max(...dayData.price));
 
@@ -54,13 +58,13 @@ router.get("/:id", async (req, res) => {
   itemDetails.high_alch = formatShort(itemDetails.high_alch);
   itemDetails.low_alch = formatShort(itemDetails.low_alch);
 
-  if (req.isAuthenticated()) {
-    dashboardEnable = true;
-  }
+  const updateTime = new Intl.DateTimeFormat("en-US", dateOptions).format(
+    new Date(itemDetails.last_update * 1000)
+  );
 
   res.render("item.ejs", {
     mainStyleSheet: mainStyleSheet,
-    headerCardArray: renderedCards,
+    headerCardArray: headerItems.map(createHeaderCard),
     catId: categoryID,
     passedItemId: itemId,
     yearMinPrice: yearMin,
@@ -70,9 +74,7 @@ router.get("/:id", async (req, res) => {
     averageVol: yearAvgVol,
     itemDetails: itemDetails,
     itemCalcs: itemCalcs,
-    updateTime: new Intl.DateTimeFormat("en-US", options).format(
-      new Date(itemDetails["last_update"] * 1000)
-    ),
+    updateTime: updateTime,
     dashboardBoolean: dashboardEnable,
   });
 });
