@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
       monthYearString: monthYear,
       newsArticleArray: newsArticles,
       headerCardArray: headerItems.map(createHeaderCard),
-      topItemListArray: renderedListItems.map(createDefaultListItem),
+      topItemListArray: listItems.map(createDefaultListItem),
       catId: categoryID,
       dashboardBoolean: dashboardEnable,
     });
