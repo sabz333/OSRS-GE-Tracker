@@ -11,9 +11,6 @@ router.get("/", async (req, res) => {
   const categoryID = 10;
   let dashboardEnable = false;
   const headerItems = await getTop5Tickers(categoryID);
-  const renderedCards = headerItems.map((item) => {
-    return createHeaderCard(item);
-  });
   if (req.isAuthenticated()) {
     dashboardEnable = true;
     const userTickers = await getUserTickers(req.user.id);
@@ -24,7 +21,7 @@ router.get("/", async (req, res) => {
     res.render("dashboard.ejs", {
       mainStyleSheet: mainStyleSheet,
       catId: categoryID,
-      headerCardArray: renderedCards,
+      headerCardArray: headerItems.map(createHeaderCard),
       dashboardBoolean: dashboardEnable,
       userItemListArray: renderedTickerTable,
     });
