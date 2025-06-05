@@ -5,16 +5,9 @@ import getSingleUserTicker from "../functions/getSingleUserTicker.js";
 import updateUserTickers from "../functions/updateUserTicker.js";
 import deleteUserTickers from "../functions/deleteUserTicker.js";
 import createDefaultListItem from "../functions/createDefaultListItem.js";
+import { checkAuthentication } from "../middlewares/auth.js";
 
 const router = new Router();
-
-// Check if user is authenticated
-function checkAuthentication(req, res, next) {
-  if (req.isAuthenticated && req.isAuthenticated()) {
-    return next();
-  }
-  res.sendStatus(401);
-}
 
 // router to handle saved user items
 router.get("/pull", checkAuthentication, async (req, res) => {
