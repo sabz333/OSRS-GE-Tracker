@@ -1,35 +1,32 @@
 <%- include('partials/header.ejs'); -%>
 
-<main class="container-xl">
-<div class="container px-1 px-sm-2">
-  <div class="row">
-    <div class="col-lg-9">
-      <div class="moversTable">
-        <section>
-          <div class="moversTable-title">Top items trading now</div>
-          <ul class="topMoversList">
-            <% topItemListArray.forEach(listItem => { %>
-             <%- listItem %>
-            <% }) %>
-          </ul>
-        </section>
+<main class="container-xl py-3 px-sm-5 mt-5">
+  <div class="container px-1 px-sm-2">
+    <div class="row">
+      <div class="col-lg-9">
+        <div class="row" id="moversTable">
+          <div class="col l-font" id="moversTable-title">Top items trading now</div>
+        </div>
+        <% topItemListArray.forEach(listItem => { %>
+          <%- listItem %>
+        <% }) %>
       </div>
-    </div>
-    <div class="col-lg-3 mt-4 mt-lg-0">
-      <div class="news-articles">
-        <h2 class="news-article-title">Latest RS News</h2>
-        <h3 class="news-articles-title"><%= monthYearString  %></h3>
-        <% for (let i = 0; i < newsArticleArray.length && i < 3; i++) { %>
-          <article class="news-list-article">
-            <%- newsArticleArray[i] %>
-          </article>
-        <% } %>
+      <div class="col-lg-3 mt-4 mt-lg-0">
+        <div id="news-articles">
+          <h2 class="text-center text-decoration-underline">Latest RS News</h2>
+          <h3 class="text-center"><%= monthYearString %></h3>
+          <% for (let i = 0; i < newsArticleArray.length && i < 3; i++) { %>
+            <article class="d-flex flex-column align-items-center">
+              <%- newsArticleArray[i] %>
+            </article>
+          <% } %>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </main>
-<%- include('partials/footer.ejs'); -%>
+
+<%- include('partials/footer.ejs') %>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script type="module" src="./scripts/common.mjs"></script>

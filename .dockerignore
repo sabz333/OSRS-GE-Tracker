@@ -1,0 +1,3 @@
+# docker ignore file
+node_modules
+postgres

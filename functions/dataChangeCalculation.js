@@ -1,8 +1,15 @@
-// calculate current ticker pricing based on opening values
-export default function dataChangeCalculation(itemObject) {
+// calculate current ticker pricing based on opening values or initial price if passed
+export default function dataChangeCalculation(
+  itemObject,
+  initialPrice,
+  initialQty
+) {
   // Data integrity check
-  if (!itemObject["high_vol"] && !itemObject["low_vol"]) {
+  if (!itemObject["high_vol"]) {
     itemObject["high_vol"] = 1;
+  }
+
+  if (!itemObject["low_vol"]) {
     itemObject["low_vol"] = 1;
   }
 
@@ -23,6 +30,13 @@ export default function dataChangeCalculation(itemObject) {
     itemObject["high_price"] * highVolWeight +
       itemObject["low_price"] * lowVolWeight
   );
+
+  let percentTotalChange = 0;
+
+  if (typeof initialPrice === "number") {
+    percentTotalChange = ((currentPrice - initialPrice) / initialPrice) * 100;
+  }
+
   const openHighVolWeight =
     itemObject["open_high_vol"] /
     (itemObject["open_high_vol"] + itemObject["open_low_vol"]);
@@ -34,6 +48,7 @@ export default function dataChangeCalculation(itemObject) {
     itemObject["open_high"] * openHighVolWeight +
       itemObject["open_low"] * openLowVolWeight
   );
+
   const percentChange = ((currentPrice - openingPrice) / openingPrice) * 100;
   const priceChange = currentPrice - openingPrice;
   let arrow = "";
@@ -51,13 +66,44 @@ export default function dataChangeCalculation(itemObject) {
     change = "negative";
   }
 
+  // Determine total value and total value change
+  // Set value arrows and coloring
+  let totalInitialValue = 0;
+  let totalCurrentValue = 0;
+  let totalValueChange = 0;
+  let arrowValue = "";
+  let changeValue = "";
+
+  if (typeof initialQty === "number") {
+    totalInitialValue = initialPrice * initialQty;
+    totalCurrentValue = currentPrice * initialQty;
+    totalValueChange = totalCurrentValue - totalInitialValue;
+
+    if (totalValueChange > 0) {
+      arrowValue = "arrow_upward";
+      changeValue = "positive";
+    } else if (totalValueChange === 0) {
+      arrowValue = "trending_flat";
+      changeValue = "flat";
+    } else {
+      arrowValue = "arrow_downward";
+      changeValue = "negative";
+    }
+  }
+
   return {
-    id: itemObject.id,
+    id: itemObject.ticker_id,
     currentPrice: currentPrice,
     percentChange: percentChange.toFixed(2),
     priceChange: priceChange,
     arrow: arrow,
     change: change,
     openPrice: openingPrice,
+    percentTotalChange: percentTotalChange.toFixed(2),
+    totalInitialValue: totalInitialValue,
+    totalCurrentValue: totalCurrentValue,
+    totalValueChange: totalValueChange,
+    arrowValue: arrowValue,
+    changeValue: changeValue,
   };
 }

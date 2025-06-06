@@ -9,7 +9,7 @@ const router = new Router();
 router.get("/", async (req, res) => {
   const searchString = req.query.search;
   const searchedItems = await searchItemDatabase(searchString);
-  const searchResults = searchedItems.map(item => createSearchResult(item));
+  const searchResults = searchedItems.map(item => createSearchResult(item, req.isAuthenticated()));
   res.send(searchResults);
 })
 
