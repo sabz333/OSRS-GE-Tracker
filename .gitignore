@@ -135,3 +135,6 @@ OS
 
 # ignore dev files
 dev-docker-compose.yml
+
+# ignore local secrets
+production_pwd.txt
