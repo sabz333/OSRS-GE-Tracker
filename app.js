@@ -86,3 +86,5 @@ app.listen(port, () => {
 });
 
 app.use(errorHandler);
+
+export default app;
